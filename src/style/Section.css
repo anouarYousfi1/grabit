@@ -1,0 +1,74 @@
+.section {
+  position: relative;
+  width: 100%;
+  height: 65%;
+  margin-top: 100px;
+  background-color: rgb(230, 10, 10);
+  overflow: hidden;
+}
+
+.section > img {
+  position: absolute;
+  width: 500px;
+  height: 450px;
+  transform: rotate(350deg);
+}
+
+.section__overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: red;
+  opacity: 0.7;
+}
+
+.section__text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.section__text--heading {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.section__text--paragraph {
+  font-size: 1.9em;
+  width: 60%;
+  text-align: center;
+}
+
+.order {
+  display: flex;
+  margin-top: 50px;
+}
+
+#order__input {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: none;
+  font-size: 20px;
+  height: 55px;
+  width: 400px;
+  text-indent: 10px;
+}
+
+.order__button {
+  display: flex;
+  width: 10em;
+  height: 3.4em;
+  background-color: black;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.order__button > h4 {
+  margin-right: 10px;
+}

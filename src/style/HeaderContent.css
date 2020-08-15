@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+.HeaderContent {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.HeaderContent__headline {
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+}
+
+.HeaderContent__headline > h1 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  font-size: 3.9em;
+}
+
+strong {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.HeaderContent__signup {
+  display: flex;
+  width: 900px;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.HeaderContent__signup > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+}
+
+.HeaderContent__signup--user {
+  width: 80%;
+  height: 90%;
+  border: 1px solid white;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0);
+}
+
+.HeaderContent__signup--user:hover {
+  color: black;
+  background-color: white;
+}
+
+.HeaderContent__signup--user:hover > .HeaderContent__signup--group {
+  padding-right: 20px;
+  transition: 1s;
+}
+
+.HeaderContent__signup--user:active {
+  box-shadow: none;
+}
+
+.HeaderContent__signup--driver {
+  margin-right: 40px;
+}
+
+.HeaderContent__signup--fa {
+  font-size: 2em;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.HeaderContent__signup--heading {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.HeaderContent__signup--group {
+  display: flex;
+  margin-top: 40px;
+  margin-left: 20px;
+  justify-content: space-between;
+  padding-right: 40px;
+}
