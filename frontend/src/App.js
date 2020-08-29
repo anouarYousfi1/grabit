@@ -1,23 +1,23 @@
 import React from "react";
-import "./frontend/style/App.css";
-import Background from "./frontend/components/home/Background";
-import HeaderContent from "./frontend/components/home/HeaderContent";
-import Content from "./frontend/components/home/Content";
-import Section from "./frontend/components/home/Section";
-import Footer from "./frontend/components/home/Footer";
-import SignUpModal from "./frontend/components/home/SignInModal";
+import "./style/App.css";
+import Background from "./components/home/Background";
+import HeaderContent from "./components/home/HeaderContent";
+import Content from "./components/home/Content";
+import Section from "./components/home/Section";
+import Footer from "./components/home/Footer";
+import SignUpModal from "./components/home/SignInModal";
 
 /* Signup as a customer Page*/
-import Signup from "./frontend/components/signup/Signup";
+import Signup from "./components/signup/Signup";
 
 /* Signup as a customer Page*/
-import Profile from "./frontend/components/profile/Profile";
+import Profile from "./components/profile/Profile";
 
-import Order from "./frontend/components/order/Order";
+import Order from "./components/order/Order";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { SignupProvider } from "./frontend/contexts/SignupContext";
-import { UserProvider } from "./frontend/contexts/userContext";
+import { SignupProvider } from "./contexts/SignupContext";
+import { UserProvider } from "./contexts/userContext";
 
 function App() {
   return (

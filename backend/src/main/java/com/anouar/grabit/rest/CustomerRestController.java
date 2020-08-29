@@ -37,16 +37,24 @@ public class CustomerRestController {
     }
 
     @PostMapping("/save")
-    public void saveCustomer(@RequestBody Customer customer, HttpServletRequest request)
+    public ResponseEntity<String> saveCustomer(@RequestBody Customer customer, HttpServletRequest request)
     {
-        service.saveCustomer(customer);
 
-        String email = (String) request.getSession().getAttribute(KEY);
-        if(email == null) {
-            email = customer.getEmail();
-            request.getSession().setAttribute(KEY, email);
+        if(!service.customerExists(customer)){
+
+            service.saveCustomer(customer);
+            String email = (String) request.getSession().getAttribute(KEY);
+            if(email == null) {
+                email = customer.getEmail();
+                request.getSession().setAttribute(KEY, email);
+            }
+            login(customer, request);
+
+        } else {
+            return new ResponseEntity<String>("User with this email already exists", HttpStatus.BAD_REQUEST);
         }
-        login(customer, request);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @PostMapping("/login")

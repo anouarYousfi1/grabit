@@ -24,4 +24,15 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public boolean customerExists(Customer customer) {
+
+        if(repository.findByEmail(customer.getEmail()) != null)
+            return true;
+
+        return false;
+    }
+
+
 }

@@ -11,4 +11,6 @@ public interface CustomerService  {
     void saveCustomer(Customer customer);
 
     List<Customer> findAll();
+
+    boolean customerExists(Customer customer);
 }
