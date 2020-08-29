@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+.order__content {
+  display: flex;
+  position: absolute;
+  top: 200px;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.order__content__main {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 60%;
+  height: 100%;
+  overflow: visible;
+}
+
+.order__content__main--header {
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  width: 100%;
+  height: 20%;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  border-bottom: 1px solid rgb(214, 214, 214);
+  align-items: center;
+}
+
+.order__content__main--content {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 80%;
+  padding-bottom: 10px;
+}
+
+.order__content__main--content--order {
+  display: flex;
+  grid-column-start: 0;
+  grid-column-end: 1;
+  grid-row: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  grid-area: "order";
+}
+
+.order__content__main--content--tracker {
+  width: 100%;
+  height: 100%;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row: 1;
+}
+
+.order__content__main--content--order--form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+#orderDescription {
+  width: 80%;
+  height: 150px;
+  resize: none;
+  border: 1px solid rgb(202, 202, 202);
+  color: black;
+  font-weight: 900;
+  font-size: large;
+  padding: 10px;
+}
+
+.order__items--textinput {
+  display: flex;
+  border: 1px solid rgb(206, 206, 206);
+  padding-left: 10px;
+  padding-right: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+#order__items--textinput--input {
+  border: none;
+  width: 80%;
+}
+
+#order__items--textinput--form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.content__order__time {
+  display: flex;
+  justify-content: space-evenly;
+  margin-left: -50px;
+}
+
+.content__order__date {
+  display: flex;
+  flex-direction: column;
+}
+
+.content__order__schedule {
+  display: flex;
+  flex-direction: column;
+}
+
+#content__order__schedule {
+  height: 40px;
+}
+
+#ASAP {
+  height: 40px;
+}
+
+.content__order__cost {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.content__order__cost > input {
+  width: 85%;
+}
+
+.tracker__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tracker__input {
+  width: 90%;
+}
+
+.order__request {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order__request--button {
+  position: absolute;
+  width: 100%;
+  bottom: -40px;
+  right: 0px;
+}
+
+.order__track--button {
+  width: 100px;
+  margin-bottom: 10px;
+}

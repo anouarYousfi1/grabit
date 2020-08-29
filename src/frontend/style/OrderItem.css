@@ -1,0 +1,42 @@
+.order__items {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 80%;
+}
+
+.order__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.order__item > * {
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
+.order__item > label {
+  position: absolute;
+  right: 0px;
+}
+
+.order__items > label {
+  width: 85%;
+}
+
+.Add,
+.Remove {
+  cursor: pointer;
+}
+
+.Remove {
+  color: red;
+}
+
+#order__items--input {
+  width: 85%;
+}
