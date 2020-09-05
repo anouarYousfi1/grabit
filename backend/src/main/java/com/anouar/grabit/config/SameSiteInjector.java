@@ -4,10 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SameSiteInjector implements WebMvcConfigurer {
+public class SameSiteInjector  {
 
     @Bean
         public CookieSerializer cookieSerializer() {
