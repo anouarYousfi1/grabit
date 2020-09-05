@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -22,15 +23,18 @@ public class CustomerRestController {
     @Autowired
     CustomerService service;
 
+
+    private Logger LOG = Logger.getLogger(this.getClass().getName());
+
     private static String KEY = "CUSTOMERS";
 
     @GetMapping("/")
-    public String getCustomers( HttpSession session) {
-        String email= (String) session.getAttribute(KEY);
-        if(email == null) {
+    public String getCustomers(HttpSession session) {
+        List emails= (List) session.getAttribute(KEY);
+        if(emails == null) {
             System.out.println("null");
         }else {
-            System.out.println(email);
+            System.out.println(emails);
         }
 
         return "index";
@@ -43,12 +47,14 @@ public class CustomerRestController {
         if(!service.customerExists(customer)){
 
             service.saveCustomer(customer);
-            String email = (String) request.getSession().getAttribute(KEY);
-            if(email == null) {
-                email = customer.getEmail();
-                request.getSession().setAttribute(KEY, email);
+            List emails = (List) request.getSession(false).getAttribute(KEY);
+            if(emails == null) {
+                emails = new ArrayList();
+                request.getSession().setAttribute(KEY, emails);
+                emails.add(customer.getEmail());
+                LOG.info(emails.toString());
             }
-            login(customer, request);
+
 
         } else {
             return new ResponseEntity<String>("User with this email already exists", HttpStatus.BAD_REQUEST);
@@ -58,15 +64,19 @@ public class CustomerRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Customer customer, HttpServletRequest request)
+    public ResponseEntity<List> login(@RequestBody Customer customer, HttpServletRequest request)
     {
-        String email = (String) request.getSession().getAttribute(KEY);
-        if(email.equals(customer.getEmail())) {
-                return new ResponseEntity<String>(email, HttpStatus.OK);
+        List emails = (List) request.getSession(false).getAttribute(KEY);
+        if(emails.contains(customer.getEmail())) {
+                return new ResponseEntity<List>(emails, HttpStatus.OK);
         }
 
 
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+
+
+
 
 }

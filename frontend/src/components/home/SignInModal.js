@@ -4,18 +4,13 @@ import "../../style/SignInModal.css";
 import ModalController from "../../js/ModalController";
 
 const SignUpModal = () => {
-  const [Buttons, setButtons] = useState([
-    {
-      id: 1,
-      headline: "Sign in as a Customer",
-      link: "/",
-    },
-    {
-      id: 2,
-      headline: "Sign in as a Driver",
-      link: "/",
-    },
-  ]);
+  const [Button, setButtons] = useState({
+    id: 1,
+    headline: "Sign in ",
+    link: "/",
+  });
+
+  const mode = "signin";
 
   useEffect(() => {
     window.addEventListener("load", ModalController);
@@ -28,13 +23,13 @@ const SignUpModal = () => {
     <div className="container">
       <div className="modal">
         <h1 className="modal__heading">Welcome Back</h1>
-        {Buttons.map((Button) => (
-          <FacebookButton
-            key={Button.id}
-            headline={Button.headline}
-            link={Button.link}
-          />
-        ))}
+
+        <FacebookButton
+          key={Button.id}
+          headline={Button.headline}
+          link={Button.link}
+          mode={mode}
+        />
       </div>
     </div>
   );

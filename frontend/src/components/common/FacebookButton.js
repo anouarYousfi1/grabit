@@ -4,15 +4,31 @@ import "../../style/FacebookButton.css";
 import FacebookLogin from "react-facebook-login";
 import { userContext } from "../../contexts/userContext";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 const FacebookButton = (props) => {
   const [User, setUser] = useContext(userContext);
   const history = useHistory();
+  const appId = "583956515621470";
+  let url = "";
+  let name = "";
+
+  if (props.mode === "signup") {
+    if (props.number == 0) {
+      url = "http://localhost:8080/grabit/api/drivers/save";
+    } else if (props.number == 1) {
+      url = "http://localhost:8080/grabit/api/customers/save";
+    }
+  } else if (props.mode === "signin") {
+    url = "http://localhost:8080/grabit/api/users/login";
+  }
 
   let fbContent;
 
+  console.log(url);
+
   const fetchData = () => {
-    fetch("http://localhost:8080/grabit/api/customers/save", {
+    fetch(url, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -26,20 +42,35 @@ const FacebookButton = (props) => {
         email: User.email,
         password: "yas1995",
       }),
+      credentials: "include",
     })
       .then((res) => {
-        if (res.ok) history.push("/profile", { user: User });
+        if (res.ok) {
+          console.log("here");
+          history.push("/profile");
+        }
+        if (res.status == 400) {
+          setUser({
+            isLoggedIn: false,
+            userID: "",
+            name: "",
+            email: "",
+            picture: "",
+          });
+          history.push("/");
+          console.log("you already have an account , sign in ");
+        }
+        return res.json();
       })
       .then((data) => {
         console.log(data);
       });
   };
 
-  const setSession = () => {};
-
   useEffect(() => {
-    if (User.name != "") {
+    if (User.email != "") {
       fetchData();
+      console.log("running ...  : ", User);
     }
   }, [User]);
 
@@ -49,8 +80,9 @@ const FacebookButton = (props) => {
       userID: response.id,
       name: response.name,
       email: response.email,
-      picture: response.picture,
+      picture: response.picture.data.url,
     });
+    console.log("setting user");
   };
 
   const componentClicked = () => {
@@ -58,10 +90,11 @@ const FacebookButton = (props) => {
   };
 
   if (User.isLoggedIn) {
+    history.push("/profile");
   } else {
     fbContent = (
       <FacebookLogin
-        appId="583956515621470"
+        appId={appId}
         autoLoad={false}
         fields="name,email,picture"
         onClick={componentClicked}

@@ -6,6 +6,7 @@ import SignupHeader from "../common/SignupHeader";
 
 const Signup = (props) => {
   const [Signups, setSignups] = useContext(SignupContext);
+  const mode = "signup";
 
   return (
     <div className="signup__container">
@@ -16,6 +17,8 @@ const Signup = (props) => {
           headline={Signups[props.number].headline}
           link={Signups[props.number].link}
           strong={Signups[props.number].strong}
+          number={props.number}
+          mode={mode}
         />
       </div>
     </div>

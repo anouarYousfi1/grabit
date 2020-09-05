@@ -7,6 +7,7 @@ import org.springframework.core.style.ToStringCreator;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 
 @Entity
@@ -14,7 +15,8 @@ import javax.validation.constraints.NotEmpty;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="user_type",
         discriminatorType = DiscriminatorType.INTEGER)
-public class User extends BaseEntity {
+
+public class User extends BaseEntity implements Serializable {
 
     @Column(name = "fullname")
     @NotEmpty

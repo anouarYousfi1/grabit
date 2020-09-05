@@ -13,7 +13,7 @@ const modalController = () => {
       container.style.display = "flex";
   };
 
-  signin.addEventListener("click", displayModal);
+  if (signin != null) signin.addEventListener("click", displayModal);
 };
 
 export default modalController;
