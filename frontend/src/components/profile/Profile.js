@@ -7,7 +7,6 @@ import { userContext } from "../../contexts/userContext";
 import axios from "axios";
 
 import "../../style/Profile.css";
-import Axios from "axios";
 
 const Profile = (props) => {
   const [User, setUser] = useContext(userContext);
@@ -44,7 +43,7 @@ const Profile = (props) => {
           userID: data.id,
           name: data.fullName,
           email: data.email,
-          picture: "",
+          picture: data.picture,
         });
       })
       .catch((e) => {

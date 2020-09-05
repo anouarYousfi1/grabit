@@ -11,7 +11,7 @@ const ProfileHeader = () => {
 
   return (
     <SignupHeader>
-      <Link to="/">
+      <Link to="/order">
         <div className="orderButton">
           <FontAwesomeIcon icon={faPen} />
           <h4>Request an Order</h4>

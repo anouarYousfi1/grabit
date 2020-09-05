@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@CrossOrigin(exposedHeaders = "errors, content-type")
+@CrossOrigin(exposedHeaders = "errors, content-type", allowCredentials = "true")
 @RequestMapping("api/customers")
 public class CustomerRestController {
 
@@ -43,6 +43,7 @@ public class CustomerRestController {
     @PostMapping("/save")
     public ResponseEntity<String> saveCustomer(@RequestBody Customer customer, HttpServletRequest request)
     {
+
 
         if(!service.customerExists(customer)){
 

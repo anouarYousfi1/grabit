@@ -41,6 +41,9 @@ public class User extends BaseEntity implements Serializable {
     @NotEmpty
     private String password;
 
+    @Column(name = "picture")
+    private String picture;
+
     public String getFullName() {
         return fullName;
     }
@@ -89,6 +92,13 @@ public class User extends BaseEntity implements Serializable {
         this.password = password;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     @Override
     public String toString() {
@@ -98,6 +108,7 @@ public class User extends BaseEntity implements Serializable {
                 .append("address", this.getAddress())
                 .append("city", this.getCity())
                 .append("phone", this.getTelephone())
-                .append("email", this.getEmail()).toString();
+                .append("email", this.getEmail())
+                .append("pictureUrl", this.getPicture()).toString();
     }
 }

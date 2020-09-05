@@ -103,7 +103,7 @@ public class UserRestController {
 
         }
         return new ResponseEntity<String>("logged out", HttpStatus.OK);
-    }   
+    }
 
 
 }

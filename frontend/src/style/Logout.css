@@ -1,0 +1,16 @@
+.logout {
+  width: fit-content;
+  float: right;
+  position: absolute;
+  right: 40px;
+  top: 40px;
+}
+
+.logout > h4 > input {
+  border: none;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+}

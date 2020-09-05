@@ -41,6 +41,7 @@ const FacebookButton = (props) => {
         telephone: "087654323",
         email: User.email,
         password: "yas1995",
+        picture: User.picture,
       }),
       credentials: "include",
     })
