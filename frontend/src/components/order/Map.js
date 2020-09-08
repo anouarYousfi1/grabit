@@ -37,7 +37,9 @@ const Map = () => {
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    const tracker_form = document.querySelector(".tracker__form");
+    const tracker_form = document.querySelector(
+      ".order__content__main--content--order--form"
+    );
 
     const addTrack = (e) => {
       e.preventDefault();

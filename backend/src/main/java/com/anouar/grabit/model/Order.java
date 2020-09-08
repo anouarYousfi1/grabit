@@ -1,35 +1,152 @@
 package com.anouar.grabit.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.sql.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "order")
-public class Order extends BaseEntity {
+@Table(name = "orders")
+public class Order extends BaseEntity implements Serializable{
 
-    @Column(name = "name")
-    @NotEmpty
-    private String name;
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    /**
+     * update :  false and insertable : false because it's not the responsibility of Order to insert these two columns
+     */
 
-    @ManyToOne
-    @JoinColumn(name = "courier_id")
-    private Courier courier;
+   private Customer customerId;
 
-    @Column(name = "source")
-    @NotEmpty
+
+    private Courier courierId;
+
+
+
+    private String time;
+
+    private Date date;
+
+    private Integer cost;
+
+
     private String source;
 
-    @Column(name = "destination")
-    @NotEmpty
+
     private String destination;
 
 
+    List<Items> items;
+
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "customerId", referencedColumnName = "id" , nullable = false)
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Customer customerId) {
+        this.customerId = customerId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "courierId", referencedColumnName = "id")
+
+    public Courier getCourierId() {
+        return courierId;
+    }
+
+    public void setCourierId(Courier courierId) {
+        this.courierId = courierId;
+    }
+
+
+    @Column(name = "time")
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+    @Column(name = "date")
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Column(name = "cost")
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
+
+    @Column(name = "source")
+    @NotEmpty
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    @Column(name = "destination")
+    @NotEmpty
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name = "order_items",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
+
+    public List<Items> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Items> items) {
+        this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "description='" + description + '\'' +
+                ", client=" + String.valueOf(customerId) +
+                ", driver=" + String.valueOf(courierId) +
+                ", time='" + time + '\'' +
+                ", date=" + date +
+                ", cost=" + cost +
+                ", source='" + source + '\'' +
+                ", destination='" + destination + '\'' +
+                ", items = "+ items.toString() +
+                '}';
+    }
 
 }
 

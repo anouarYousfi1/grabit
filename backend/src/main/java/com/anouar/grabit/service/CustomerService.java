@@ -13,4 +13,8 @@ public interface CustomerService  {
     List<Customer> findAll();
 
     boolean customerExists(Customer customer);
+
+    Customer findCustomerById(Integer id);
+
+    Customer findCustomerByEmail(String email);
 }

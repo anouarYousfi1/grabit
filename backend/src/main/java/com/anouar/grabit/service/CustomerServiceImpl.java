@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -32,6 +33,17 @@ public class CustomerServiceImpl implements CustomerService {
             return true;
 
         return false;
+    }
+
+    @Override
+    public Customer findCustomerById(Integer id) {
+        Optional<Customer> customer = repository.findById(id);
+        return customer.get();
+    }
+
+    @Override
+    public Customer findCustomerByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
 
