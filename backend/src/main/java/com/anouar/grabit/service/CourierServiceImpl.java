@@ -1,11 +1,13 @@
 package com.anouar.grabit.service;
 
 import com.anouar.grabit.model.Courier;
+import com.anouar.grabit.model.Customer;
 import com.anouar.grabit.repository.CourierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourierServiceImpl implements CourierService{
@@ -25,9 +27,15 @@ public class CourierServiceImpl implements CourierService{
 
     @Override
     public boolean courierExists(Courier courier) {
-        if(repository.findByEmail(courier.getEmail()) != null)
+        if (repository.findByEmail(courier.getEmail()) != null)
             return true;
 
         return false;
+    }
+
+    public Courier findCourierById(Integer id) {
+        Optional<Courier> courier = repository.findById(id);
+        return courier.get();
+
     }
 }

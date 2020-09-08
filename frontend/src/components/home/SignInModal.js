@@ -20,8 +20,8 @@ const SignUpModal = () => {
   });
 
   return (
-    <div className="container">
-      <div className="modal">
+    <div className="container__modal">
+      <div className="modal__container">
         <h1 className="modal__heading">Welcome Back</h1>
 
         <FacebookButton

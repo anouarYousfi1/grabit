@@ -45,7 +45,7 @@ const OrderContent = () => {
       console.log("after added", Orders);
     };
 
-    console.log("i run only once");
+    //console.log("i run only once");
 
     const removeItem = (e) => {
       const order = {
@@ -81,6 +81,7 @@ const OrderContent = () => {
             <form
               action=""
               className="order__content__main--content--order--form"
+              id="order__form"
             >
               <label htmlFor="orderDescription">Describe your Order</label>
               <textarea
@@ -112,7 +113,12 @@ const OrderContent = () => {
                       orderName={Order.orderName}
                       name="order"
                     />
-                    <input type="hidden" name="order" value={Order.orderName} />
+                    <input
+                      type="hidden"
+                      name="order"
+                      value={Order.orderName}
+                      className="order_items"
+                    />
                   </div>
                 ))}
               </div>
@@ -141,28 +147,29 @@ const OrderContent = () => {
 
               <div className="content__order__cost">
                 <label htmlFor="content__order__cost">Cost</label>
-                <input type="text" name="cost" />
+                <input type="text" name="cost" id="cost" />
               </div>
 
               <input type="submit" className="order__request--button" />
             </form>
           </div>
           <div className="order__content__main--content--tracker">
-            <form className="tracker__form" action="">
+            <div className="coordinates">
               <label htmlFor="source">source</label>
-              <input type="text" name="source" className="tracker__input" />
+              <input
+                type="text"
+                name="source"
+                className="tracker__input tracker__input--source"
+                form="order__form"
+              />
               <label htmlFor="destination">destination</label>
               <input
                 type="text"
                 name="destination"
-                className="tracker__input"
+                className="tracker__input tracker__input--destination"
+                form="order__form"
               />
-              <input
-                type="submit"
-                value="submit"
-                className="order__track--button"
-              />
-            </form>
+            </div>
 
             <Map />
           </div>

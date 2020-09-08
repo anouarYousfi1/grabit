@@ -17,7 +17,6 @@ import java.io.Serializable;
         discriminatorType = DiscriminatorType.INTEGER)
 
 public class User extends BaseEntity implements Serializable {
-
     @Column(name = "fullname")
     @NotEmpty
     private String fullName;
@@ -31,18 +30,23 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "telephone")
     @Digits(fraction = 0, integer = 10)
-    private String telephone;
 
+    private String telephone;
     @Column(name = "email")
     @NotEmpty
-    private String email;
 
+    private String email;
     @Column(name = "password")
     @NotEmpty
-    private String password;
 
+    private String password;
     @Column(name = "picture")
+
     private String picture;
+
+    public User() {
+        super();
+    }
 
     public String getFullName() {
         return fullName;
@@ -52,6 +56,7 @@ public class User extends BaseEntity implements Serializable {
         this.fullName = fullname;
     }
 
+
     public String getAddress() {
         return address;
     }
@@ -60,6 +65,7 @@ public class User extends BaseEntity implements Serializable {
         this.address = address;
     }
 
+
     public String getCity() {
         return city;
     }
@@ -67,6 +73,7 @@ public class User extends BaseEntity implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
 
     public String getTelephone() {
         return telephone;

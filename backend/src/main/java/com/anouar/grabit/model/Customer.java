@@ -1,10 +1,11 @@
 package com.anouar.grabit.model;
 
 
-import org.springframework.context.annotation.Scope;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
@@ -13,8 +14,21 @@ import java.util.List;
 @DiscriminatorValue("1")
 public class Customer extends User implements Serializable {
 
-    @OneToMany(mappedBy = "customer")
     private List<Order> orders;
+
+    public Customer() {
+        super();
+    }
+
+    @OneToMany(mappedBy = "customerId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public String toString() {

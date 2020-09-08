@@ -1,6 +1,6 @@
 const modalController = () => {
-  const modal = document.querySelector(".modal");
-  const container = document.querySelector(".container");
+  const modal = document.querySelector(".modal__container");
+  const container = document.querySelector(".container__modal");
   const signin = document.querySelector("#login");
 
   window.onclick = (e) => {

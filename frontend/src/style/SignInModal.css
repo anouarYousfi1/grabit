@@ -1,4 +1,4 @@
-.container {
+.container__modal {
   position: absolute;
   display: none;
   width: 100%;
@@ -9,7 +9,7 @@
   left: 0;
 }
 
-.modal {
+.modal__container {
   align-self: center;
   display: flex;
   flex-direction: column;

@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../style/ProfileHeader.css";
 import { Link } from "react-router-dom";
 import { userContext } from "../../contexts/userContext";
+import Logout from "../common/Logout";
 
 const ProfileHeader = () => {
   const [User, setUser] = useContext(userContext);
+  const url = "http://localhost:8080/grabit/api/users/logout";
 
   return (
     <SignupHeader>
@@ -24,6 +26,8 @@ const ProfileHeader = () => {
           <img src={User.picture} alt="" />
         </div>
       </div>
+
+      <Logout url={url} />
     </SignupHeader>
   );
 };
