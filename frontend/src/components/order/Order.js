@@ -5,15 +5,15 @@ import "../../style/Order.css";
 import { userContext } from "../../contexts/userContext";
 import Logout from "../common/Logout";
 import { Alert } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 const Order = () => {
   const [User, setUser] = useContext(userContext);
   const [state, setState] = useState();
   const [Order, setOrder] = useState();
-  const url = "http://localhost:8080/grabit/api/users/logout";
-  const orderUrl = "http://localhost:8080/grabit/api/orders/customer/save";
-  const loginUrl = "http://localhost:8080/grabit/api/users/";
+  const url = process.env.REACT_APP_LOGOUT_URL;
+  const orderUrl = process.env.REACT_APP_ORDER_CUSTOMER_SAVE_URL;
+  const loginUrl = process.env.REACT_APP_GET_USER_URL;
   const history = useHistory();
 
   const saveOrder = () => {
@@ -123,26 +123,31 @@ const Order = () => {
     fetchData(loginUrl, "GET");
 
     if (Order !== null && Order !== undefined) fetchData(orderUrl, "POST");
-    tracker_form.addEventListener("submit", saveOrder);
+    if (tracker_form != null)
+      tracker_form.addEventListener("submit", saveOrder);
   }, [Order]);
 
   console.log(state);
 
-  return (
-    <div className="order__container">
-      <SignupHeader>
-        <div className="order__user">
-          <h4 className="user__name">{User.name}</h4>
-          <div className="user__picture">
-            <img src={User.picture} alt="" />
+  if (User.isLoggedIn) {
+    return (
+      <div className="order__container">
+        <SignupHeader>
+          <div className="order__user">
+            <h4 className="user__name">{User.name}</h4>
+            <div className="user__picture">
+              <img src={User.picture} alt="" />
+            </div>
           </div>
-        </div>
-        <Logout url={url} />
-      </SignupHeader>
-      {state}
-      <OrderContent />
-    </div>
-  );
+          <Logout url={url} />
+        </SignupHeader>
+        {state}
+        <OrderContent />
+      </div>
+    );
+  } else {
+    return <Redirect to="/" />;
+  }
 };
 
 export default Order;

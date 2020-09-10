@@ -38,4 +38,9 @@ public class CourierServiceImpl implements CourierService{
         return courier.get();
 
     }
+
+    @Override
+    public Courier findCourierByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 }

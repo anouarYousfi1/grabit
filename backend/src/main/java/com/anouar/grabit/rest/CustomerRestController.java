@@ -48,7 +48,7 @@ public class CustomerRestController {
         if(!service.customerExists(customer)){
 
             service.saveCustomer(customer);
-            List emails = (List) request.getSession(false).getAttribute(KEY);
+            List emails = (List) request.getSession().getAttribute(KEY);
             if(emails == null) {
                 emails = new ArrayList();
                 request.getSession().setAttribute(KEY, emails);

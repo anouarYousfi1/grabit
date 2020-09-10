@@ -12,4 +12,6 @@ public interface UserService {
     List<User> findAll();
 
     User findUser(String email);
+
+    User findUserById(Integer id);
 }

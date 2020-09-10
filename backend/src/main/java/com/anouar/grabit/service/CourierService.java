@@ -14,4 +14,6 @@ public interface CourierService {
 
     Courier findCourierById(Integer id);
 
+    Courier findCourierByEmail(String email);
+
 }

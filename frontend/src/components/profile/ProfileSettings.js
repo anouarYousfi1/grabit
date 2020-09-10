@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
 
 const ProfileSettings = () => {
   const [User, setUser] = useContext(userContext);
+  const [updated, setUpadated] = useState(false);
   let name;
   let email;
   let phone;
   let picture;
 
-  const setContext = (e) => {
+  let updateUrl = process.env.REACT_APP_SET_USER_URL;
+
+  const updateHandler = (e) => {
     const profileForm = document.querySelector(".profileForm");
     const profilePicture = document.querySelector(".picture");
 
@@ -21,18 +24,60 @@ const ProfileSettings = () => {
     picture = profilePicture.getAttribute("src");
 
     setUser({
+      ...User,
       name: name,
       email: email,
       phone: phone,
       picture: picture,
     });
+
+    setUpadated(true);
   };
+
+  const fetchData = (url, method) => {
+    fetch(url, {
+      method: method,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: User.userID,
+        fullName: User.name,
+        address: "33 rue demnat",
+        city: "oujda",
+        telephone: User.phone,
+        email: User.email,
+        picture: User.picture,
+        actif: User.actif,
+      }),
+      credentials: "include",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    console.log(updated);
+    console.log(User);
+    if (updated) {
+      fetchData(updateUrl, "POST");
+      setUpadated(false);
+    }
+  }, [updated, User]);
 
   return (
     <div className="content__container--data">
       <div className="content__container--data--content">
         <div className="content__container--data--content--form">
-          <form className="profileForm" onSubmit={setContext}>
+          <form className="profileForm" onSubmit={updateHandler}>
             <label htmlFor="">First & Last Name</label>
             <input type="text" name="name" placeholder={User.name} />
             <label htmlFor="">Email</label>

@@ -4,7 +4,6 @@ import "../../style/FacebookButton.css";
 import FacebookLogin from "react-facebook-login";
 import { userContext } from "../../contexts/userContext";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 
 const FacebookButton = (props) => {
   const [User, setUser] = useContext(userContext);
@@ -12,20 +11,58 @@ const FacebookButton = (props) => {
   const appId = "583956515621470";
   let url = "";
   let name = "";
+  let body = {};
 
   if (props.mode === "signup") {
     if (props.number == 0) {
-      url = "http://localhost:8080/grabit/api/drivers/save";
+      url = process.env.REACT_APP_DRIVER_SIGNUP_URL;
     } else if (props.number == 1) {
-      url = "http://localhost:8080/grabit/api/customers/save";
+      url = process.env.REACT_APP_CUSTOMER_SIGNUP_URL;
     }
   } else if (props.mode === "signin") {
-    url = "http://localhost:8080/grabit/api/users/login";
+    url = process.env.REACT_APP_LOGIN_URL;
   }
 
   let fbContent;
 
   console.log(url);
+
+  switch (url) {
+    case process.env.REACT_APP_DRIVER_SIGNUP_URL:
+      body = JSON.stringify({
+        fullName: User.name,
+        address: "33 rue demnat",
+        city: "oujda",
+        telephone: "087654323",
+        email: User.email,
+        picture: User.picture,
+        actif: false,
+      });
+      break;
+
+    case process.env.REACT_APP_CUSTOMER_SIGNUP_URL:
+      body = JSON.stringify({
+        fullName: User.name,
+        address: "33 rue demnat",
+        city: "oujda",
+        telephone: "087654323",
+        email: User.email,
+        picture: User.picture,
+        actif: null,
+      });
+      break;
+
+    case process.env.REACT_APP_LOGIN_URL:
+      body = JSON.stringify({
+        fullName: User.name,
+        address: "33 rue demnat",
+        city: "oujda",
+        telephone: "087654323",
+        email: User.email,
+        picture: User.picture,
+      });
+      break;
+  }
 
   const fetchData = () => {
     fetch(url, {
@@ -34,15 +71,7 @@ const FacebookButton = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        fullName: User.name,
-        address: "33 rue demnat",
-        city: "oujda",
-        telephone: "087654323",
-        email: User.email,
-        password: "yas1995",
-        picture: User.picture,
-      }),
+      body: body,
       credentials: "include",
     })
       .then((res) => {

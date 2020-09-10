@@ -49,7 +49,7 @@ public class CourierRestController {
         if(!service.courierExists(courier)){
 
             service.saveCourier(courier);
-            List emails = (List) request.getSession(false).getAttribute(KEY);
+            List emails = (List) request.getSession().getAttribute(KEY);
             if(emails == null) {
                 emails = new ArrayList();
                 request.getSession().setAttribute(KEY, emails);
@@ -62,6 +62,19 @@ public class CourierRestController {
             return new ResponseEntity<String>("User with this email already exists", HttpStatus.BAD_REQUEST);
         }
 
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/setState")
+    public ResponseEntity<String> setState(@RequestBody Courier courier){
+
+        Courier courierToSubmit = service.findCourierByEmail(courier.getEmail());
+
+        if(courierToSubmit != null) {
+            courierToSubmit.setActif(courier.getActif());
+            service.saveCourier(courierToSubmit);
+        }
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

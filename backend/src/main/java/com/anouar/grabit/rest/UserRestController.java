@@ -33,12 +33,12 @@ public class UserRestController {
 
 
     @GetMapping("/")
-    public @ResponseBody ResponseEntity<User> getMessage(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody ResponseEntity<User> getUser(HttpServletRequest request) {
 
 
        // response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=None");
 
-        List emails = (List) request.getSession().getAttribute("GREETING_MESSAGES");
+        List emails = (List) request.getSession().getAttribute(KEY);
         User user = null;
         if(emails == null) {
             LOG.info("emails is null");
@@ -62,21 +62,21 @@ public class UserRestController {
     }
 
     @PostMapping("/login")
-    public @ResponseBody ResponseEntity<List> login(@RequestBody User user ,HttpServletRequest request, HttpServletResponse response)
+    public @ResponseBody ResponseEntity<List> login(@RequestBody User user ,HttpServletRequest request)
     {
 
        // response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=None");
         if(userService.findUser(user.getEmail()) != null) {
-            List emails = (List) request.getSession().getAttribute("GREETING_MESSAGES");
+            List emails = (List) request.getSession().getAttribute(KEY);
             if (emails == null) {
                 emails = new ArrayList<>();
-                request.getSession().setAttribute("GREETING_MESSAGES", emails);
+                request.getSession().setAttribute(KEY, emails);
             }
 
             if (!emails.contains(user.getEmail())){
                 emails.add(user.getEmail());
                 LOG.info("adding email to emails");
-                LOG.info("printing out session : "+ request.getSession(false).getAttribute("GREETING_MESSAGES").toString());
+                LOG.info("printing out session : "+ request.getSession(false).getAttribute(KEY).toString());
             }
 
 
@@ -103,6 +103,23 @@ public class UserRestController {
 
         }
         return new ResponseEntity<String>("logged out", HttpStatus.OK);
+    }
+
+
+    @PostMapping("/update/settings")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+
+        User userToUpdate = userService.findUserById(user.getId());
+
+
+        if(userToUpdate != null){
+            userToUpdate.setFullName(user.getFullName());
+            userToUpdate.setEmail(user.getEmail());
+            userToUpdate.setTelephone(user.getTelephone());
+            userService.saveUser(userToUpdate);
+        }
+
+        return new ResponseEntity<User>(userToUpdate, HttpStatus.OK);
     }
 
 

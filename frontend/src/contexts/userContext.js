@@ -10,6 +10,8 @@ export const UserProvider = (props) => {
     email: "",
     phone: "",
     picture: "",
+    type: "",
+    actif: "",
   });
 
   return (

@@ -1,16 +1,15 @@
 import React, { useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import ProfileHeader from "./ProfileHeader";
 import ProfileContent from "./ProfileContent";
 import ProfileController from "../../js/ProfileController";
 import { userContext } from "../../contexts/userContext";
-import axios from "axios";
 
 import "../../style/Profile.css";
 
 const Profile = (props) => {
   const [User, setUser] = useContext(userContext);
-  const url = "http://localhost:8080/grabit/api/users/";
+  const url = process.env.REACT_APP_GET_USER_URL;
   const history = useHistory();
 
   const fetchData = () => {
@@ -30,6 +29,8 @@ const Profile = (props) => {
             name: "",
             email: "",
             picture: "",
+            type: "",
+            actif: "",
           });
           history.push("/");
           console.log("you already have an account , sign in ");
@@ -44,6 +45,9 @@ const Profile = (props) => {
           name: data.fullName,
           email: data.email,
           picture: data.picture,
+          phone: data.telephone,
+          actif: data.actif,
+          type: data.user_type,
         });
       })
       .catch((e) => {
@@ -56,12 +60,16 @@ const Profile = (props) => {
     ProfileController();
   }, []);
 
-  return (
-    <div className="profile__container">
-      <ProfileHeader />
-      <ProfileContent />
-    </div>
-  );
+  if (User.isLoggedIn) {
+    return (
+      <div className="profile__container">
+        <ProfileHeader />
+        <ProfileContent />
+      </div>
+    );
+  } else {
+    return <Redirect to="/" />;
+  }
 };
 
 export default Profile;

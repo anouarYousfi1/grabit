@@ -2,11 +2,10 @@ package com.anouar.grabit.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @MappedSuperclass
-public class BaseEntity {
-
-
+public class BaseEntity implements Serializable {
 
     private int id;
 

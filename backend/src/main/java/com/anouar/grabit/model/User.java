@@ -1,7 +1,7 @@
 package com.anouar.grabit.model;
 
 
-import org.springframework.context.annotation.Scope;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
@@ -36,13 +36,14 @@ public class User extends BaseEntity implements Serializable {
     @NotEmpty
 
     private String email;
-    @Column(name = "password")
-    @NotEmpty
 
-    private String password;
     @Column(name = "picture")
 
     private String picture;
+
+    @Column(name = "actif")
+    private Boolean actif;
+
 
     public User() {
         super();
@@ -91,13 +92,7 @@ public class User extends BaseEntity implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getPicture() {
         return picture;
@@ -106,6 +101,28 @@ public class User extends BaseEntity implements Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+
+    public Boolean getActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+
+
+    @Transient
+    @JsonProperty("user_type")
+    public Integer getDiscriminatorValue() {
+        return Integer.valueOf(this.getClass().getAnnotation(DiscriminatorValue.class).value());
+    }
+
+
+
+
+
+
 
     @Override
     public String toString() {
@@ -116,6 +133,8 @@ public class User extends BaseEntity implements Serializable {
                 .append("city", this.getCity())
                 .append("phone", this.getTelephone())
                 .append("email", this.getEmail())
-                .append("pictureUrl", this.getPicture()).toString();
+                .append("pictureUrl", this.getPicture())
+                .append("actif", this.getActif())
+                .append("user_type" ,  this.getDiscriminatorValue()).toString();
     }
 }
