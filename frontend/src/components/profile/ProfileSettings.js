@@ -81,7 +81,7 @@ const ProfileSettings = () => {
             <label htmlFor="">First & Last Name</label>
             <input type="text" name="name" placeholder={User.name} />
             <label htmlFor="">Email</label>
-            <input type="text" name="email" placeholder={User.email} />
+            <input type="text" name="email" placeholder={User.email} readOnly />
             <label htmlFor="">Phone</label>
             <input type="text" name="phone" />
             <input
