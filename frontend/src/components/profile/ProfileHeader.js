@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { userContext } from "../../contexts/userContext";
 import Logout from "../common/Logout";
 import Toggle from "react-bootstrap-toggle";
+import { Form } from "react-bootstrap";
 
 const ProfileHeader = () => {
   const [User, setUser] = useContext(userContext);
@@ -33,14 +34,24 @@ const ProfileHeader = () => {
 
   if (User.type == 2) {
     toggleButton = (
-      <Toggle
-        onClick={toggleState}
-        on={<h2>actif</h2>}
-        off={<h2>inactif</h2>}
-        size="xs"
-        offstyle="danger"
-        active={Active}
-      />
+      // <Toggle
+      //   onClick={toggleState}
+      //   on={<h2>actif</h2>}
+      //   off={<h2>inactif</h2>}
+      //   size="xs"
+      //   offstyle="danger"
+      //   active={Active}
+      // />
+
+      <Form>
+        <Form.Check
+          type="switch"
+          id="custom-switch"
+          label="Take Control"
+          onClick={toggleState}
+          size="lg"
+        />
+      </Form>
     );
   }
 
