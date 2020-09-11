@@ -2,6 +2,7 @@ package com.anouar.grabit.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ public class Customer extends User implements Serializable {
         return orders;
     }
 
+    @JsonProperty("orders")
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }

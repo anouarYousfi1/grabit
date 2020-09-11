@@ -29,4 +29,9 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> getMyOrders(Courier courier) {
         return repository.findByCourierId(courier);
     }
+
+    @Override
+    public Order findOrderById(Integer id) {
+        return repository.findById(id).get();
+    }
 }

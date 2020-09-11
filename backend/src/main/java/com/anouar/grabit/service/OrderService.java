@@ -14,4 +14,6 @@ public interface OrderService {
     List<Order> getMyOrders(Customer customer);
 
     List<Order> getMyOrders(Courier courier);
+
+    Order findOrderById(Integer id);
 }

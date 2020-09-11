@@ -1,5 +1,8 @@
 package com.anouar.grabit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -38,6 +41,9 @@ public class Order extends BaseEntity implements Serializable{
 
 
     List<Items> items;
+
+    private String status;
+
 
     @Column(name = "description")
     public String getDescription() {
@@ -124,13 +130,24 @@ public class Order extends BaseEntity implements Serializable{
             name = "order_items",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
-
+    @JsonIgnore
     public List<Items> getItems() {
         return items;
     }
 
+    @JsonProperty
     public void setItems(List<Items> items) {
         this.items = items;
+    }
+
+
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

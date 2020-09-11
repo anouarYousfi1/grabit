@@ -11,10 +11,14 @@ const Order = () => {
   const [User, setUser] = useContext(userContext);
   const [state, setState] = useState();
   const [Order, setOrder] = useState();
+  const history = useHistory();
+
   const url = process.env.REACT_APP_LOGOUT_URL;
   const orderUrl = process.env.REACT_APP_ORDER_CUSTOMER_SAVE_URL;
   const loginUrl = process.env.REACT_APP_GET_USER_URL;
-  const history = useHistory();
+
+  const customerOrdersURL = process.env.REACT_APP_GET_CUSTOMER_ORDERS_URL;
+  const driverOrdersURL = process.env.REACT_APP_GET_DRIVER_ORDERS_URL;
 
   const saveOrder = () => {
     const descriptionInput = document.querySelector("#orderDescription");
@@ -61,15 +65,34 @@ const Order = () => {
   };
 
   const fetchData = (url, method) => {
-    fetch(url, {
-      mode: "cors",
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(Order),
-      credentials: "include",
-    })
+    let options = {};
+
+    switch (method) {
+      case "GET":
+        options = {
+          mode: "cors",
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        };
+        break;
+
+      case "POST":
+        options = {
+          mode: "cors",
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(Order),
+          credentials: "include",
+        };
+        break;
+    }
+
+    fetch(url, options)
       .then((res) => {
         if (method == "POST") {
           if (res.ok) {

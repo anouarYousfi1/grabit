@@ -1,9 +1,6 @@
 package com.anouar.grabit.rest;
 
-import com.anouar.grabit.model.Courier;
-import com.anouar.grabit.model.Customer;
-import com.anouar.grabit.model.Items;
-import com.anouar.grabit.model.Order;
+import com.anouar.grabit.model.*;
 import com.anouar.grabit.service.CourierService;
 import com.anouar.grabit.service.CustomerService;
 import com.anouar.grabit.service.ItemsService;
@@ -44,8 +41,62 @@ public class OrderRestController {
 
     @PostMapping("/customer")
     public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
+        Customer customerWhoOrdered = customerService.findCustomerById(customer.getId());
+        return getListOrders(orderService.getMyOrders(customerWhoOrdered), customerWhoOrdered);
+    }
 
-        List<Order> orders = orderService.getMyOrders(customer);
+    @PostMapping("/driver")
+    public ResponseEntity<List<Order>> getMyOrders(@RequestBody Courier courier) {
+
+        Courier courierWhoOrdered = courierService.findCourierById(courier.getId());
+        return getListOrders(orderService.getMyOrders(courierWhoOrdered), courierWhoOrdered);
+    }
+
+    @PostMapping("/customer/save")
+    public ResponseEntity<List<Order>> save(@RequestBody Order order) {
+        Courier courierId = null;
+        List<Items> items = new ArrayList<>();
+        List<Items> foundItems = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
+
+        LOG.info(order.toString());
+
+        Customer customerId = customerService.findCustomerByEmail(order.getCustomerId().getEmail());
+
+        if (order.getCourierId() != null)
+            courierId = courierService.findCourierById(order.getCourierId().getId());
+
+        order.setCustomerId(customerId);
+        order.setCourierId(courierId);
+
+
+        for (Items item : order.getItems()) {
+            if (!itemsService.itemExists(item)) {
+                itemsService.saveItem(item);
+                Items fetchedItem = itemsService.findByName(item.getName());
+                items.add(fetchedItem);
+            } else {
+                Items fetchedItem = itemsService.findByName(item.getName());
+                items.add(fetchedItem);
+
+            }
+        }
+
+
+            order.setItems(items);
+            System.out.println(order.toString());
+
+            orderService.saveOrder(order);
+
+
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+
+
+
+
+    private ResponseEntity<List<Order>> getListOrders(List<Order> myOrders, @RequestBody User user) {
+        List<Order> orders = myOrders;
 
         if(orders != null && !orders.isEmpty())
             return new ResponseEntity<List<Order>>(orders, HttpStatus.OK);
@@ -53,42 +104,20 @@ public class OrderRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @PostMapping("/setOrderState")
+    public ResponseEntity<String> setOrder(@RequestBody Order order){
 
-    @PostMapping("/customer/save")
-    public ResponseEntity<List<Order>> save(@RequestBody Order order) {
-        Courier courierId = null;
-        List<Items> items = new ArrayList<>();
+        Order orderToSet = orderService.findOrderById(order.getId());
 
-        LOG.info(order.toString());
+        LOG.info(String.valueOf(order.getId()) );
+        LOG.info(   order.getStatus());
 
-        Customer customerId  = customerService.findCustomerByEmail(order.getCustomerId().getEmail());
 
-        if(order.getCourierId() != null)
-            courierId = courierService.findCourierById(order.getCourierId().getId());
-
-        order.setCustomerId(customerId);
-        order.setCourierId(courierId);
-
-        for (Items item: order.getItems()) {
-            if(!itemsService.itemExists(item)) {
-                itemsService.saveItem(item);
-                items.add(item);
-            }
-            else {
-                Items fetchedItem = itemsService.findByName(item.getName());
-                items.add(fetchedItem);
-            }
+        if(orderToSet != null) {
+            orderToSet.setStatus(order.getStatus());
+            orderService.saveOrder(orderToSet);
         }
-
-        order.setItems(items);
-
-        System.out.println(order.toString());
-
-        orderService.saveOrder(order);
-
-
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
 
 }
