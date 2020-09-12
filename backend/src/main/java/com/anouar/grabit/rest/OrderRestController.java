@@ -120,4 +120,21 @@ public class OrderRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+
+    @PostMapping("/getOrderState")
+    public ResponseEntity<Order> getOrderStatus(@RequestBody Order order){
+
+        Order orderToGet = null;
+
+
+        orderToGet = orderService.findOrderById(order.getId());
+
+        if(orderToGet == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<Order>(orderToGet, HttpStatus.OK);
+
+
+    }
+
 }

@@ -2,20 +2,22 @@ import React, { useState, useEffect, useContext } from "react";
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
 import { Table, Form } from "react-bootstrap";
+import SelectOptions from "../common/SelectOptions";
 
 const ProfileRequests = () => {
   const [User, setUser] = useContext(userContext);
   const [Orders, setOrders] = useState([]);
   const [Order, setOrder] = useState({});
+  //const [orderStatus, setOrderStatus] = useState(undefined);
 
   const customerOrdersURL = process.env.REACT_APP_GET_CUSTOMER_ORDERS_URL;
   const driverOrdersURL = process.env.REACT_APP_GET_DRIVER_ORDERS_URL;
-  const driverSetOrder = process.env.REACT_APP_DRIVER_SET_ORDER_URL;
+  const driverSetOrderURL = process.env.REACT_APP_DRIVER_SET_ORDER_URL;
+  const orderStatusURL = process.env.REACT_APP_GET_ORDER_STATUS;
 
   let status = null;
 
   const setOrderState = (e) => {
-    console.log(e.target.value);
     setOrder({
       ...Order,
       status: e.target.value,
@@ -24,46 +26,34 @@ const ProfileRequests = () => {
 
   const selectRowHandler = (e) => {
     let selectedRow = e.currentTarget;
-    let nextClick;
-    let currentClick;
 
     document.addEventListener("click", (event) => {
       let isClickInside = selectedRow.contains(event.target);
 
       if (isClickInside) {
         selectedRow.lastChild.firstChild[0].removeAttribute("disabled");
-        console.log("inside");
         setOrder({
           id: selectedRow.firstChild.textContent,
           status: undefined,
         });
       } else {
         selectedRow.lastChild.firstChild[0].setAttribute("disabled", "");
-        console.log("outside");
       }
     });
   };
 
-  const unselectRowHandler = (e) => {};
-
-  if (User.type === 2) {
-    status = (
-      <Form>
-        <Form.Group controlId="select__form">
-          <Form.Control
-            as="select"
-            custom
-            onChange={setOrderState.bind(this)}
-            disabled
-          >
-            <option></option>
-            <option>picked</option>
-            <option>delivered</option>
-          </Form.Control>
-        </Form.Group>
-      </Form>
-    );
-  }
+  const setStatusRender = (orderStatus) => {
+    if (User.type === 2) {
+      return (
+        <SelectOptions
+          status={orderStatus}
+          setOrderState={setOrderState}
+        ></SelectOptions>
+      );
+    } else if (User.type === 1) {
+      return orderStatus;
+    }
+  };
 
   const fetchData = (url, method) => {
     let options = {};
@@ -95,11 +85,13 @@ const ProfileRequests = () => {
         };
         break;
 
-      case method === "POST" && url === driverSetOrder:
+      case method === "POST" &&
+        (url === driverSetOrderURL || url === orderStatusURL):
         options = {
           mode: "cors",
           method: method,
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
           },
           body: JSON.stringify(Order),
@@ -113,8 +105,7 @@ const ProfileRequests = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        if (url !== process.env.REACT_APP_DRIVER_SET_ORDER_URL) {
+        if (url !== driverSetOrderURL && url !== orderStatusURL) {
           data.map((d) => {
             setOrders(...Orders, [
               {
@@ -146,7 +137,7 @@ const ProfileRequests = () => {
 
   useEffect(() => {
     if (Order && Order !== {} && Order.id && Order.status !== undefined)
-      fetchData(driverSetOrder, "POST");
+      fetchData(driverSetOrderURL, "POST");
   }, [Order]);
 
   return (
@@ -172,7 +163,7 @@ const ProfileRequests = () => {
                   <td>{order.date}</td>
                   <td>{order.source}</td>
                   <td>{order.destination}</td>
-                  <td>{status}</td>
+                  <td>{setStatusRender(order.status)}</td>
                 </tr>
               );
             })}
