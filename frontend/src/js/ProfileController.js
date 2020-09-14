@@ -12,9 +12,16 @@ const ProfileController = () => {
 
   const toggleActive = (ch) => {
     const activeDiv = document.querySelector(".active");
+    const header = document.querySelector(".header__data");
+    const dropdown = document.querySelector(".dropdown");
+
     activeDiv.classList.remove(active);
     ch.currentTarget.className += " " + active;
-    dataHeader.innerHTML = ch.currentTarget.textContent;
+    header.innerHTML = ch.currentTarget.textContent;
+
+    if (header.innerHTML === "Requests")
+      dropdown.firstChild.removeAttribute("hidden");
+    else dropdown.firstChild.setAttribute("hidden", "");
 
     switch (ch.currentTarget.textContent) {
       case "Adresse":

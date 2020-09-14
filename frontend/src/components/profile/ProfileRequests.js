@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
+import { orderContext } from "../../contexts/OrderContext";
 import { Table, Form } from "react-bootstrap";
 import SelectOptions from "../common/SelectOptions";
 
 const ProfileRequests = () => {
   const [User, setUser] = useContext(userContext);
-  const [Orders, setOrders] = useState([]);
+  const [Orders, setOrders] = useContext(orderContext);
   const [Order, setOrder] = useState({});
   //const [orderStatus, setOrderStatus] = useState(undefined);
 
@@ -14,8 +15,6 @@ const ProfileRequests = () => {
   const driverOrdersURL = process.env.REACT_APP_GET_DRIVER_ORDERS_URL;
   const driverSetOrderURL = process.env.REACT_APP_DRIVER_SET_ORDER_URL;
   const orderStatusURL = process.env.REACT_APP_GET_ORDER_STATUS;
-
-  let status = null;
 
   const setOrderState = (e) => {
     setOrder({
@@ -107,7 +106,8 @@ const ProfileRequests = () => {
       .then((data) => {
         if (url !== driverSetOrderURL && url !== orderStatusURL) {
           data.map((d) => {
-            setOrders(...Orders, [
+            setOrders([
+              ...Orders,
               {
                 id: d.id,
                 time: d.time,
@@ -139,6 +139,10 @@ const ProfileRequests = () => {
     if (Order && Order !== {} && Order.id && Order.status !== undefined)
       fetchData(driverSetOrderURL, "POST");
   }, [Order]);
+
+  useEffect(() => {
+    console.log(Orders);
+  }, [Orders]);
 
   return (
     <div className="profile__requests">

@@ -39,4 +39,16 @@ public class OrderServiceImpl implements OrderService{
         else
             return null;
     }
+
+    @Override
+    public List<Order> getOrdersByStatus(Customer customer, String status) {
+        return repository.findByCustomerIdAndStatusLike(customer, status);
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(Courier courier, String status) {
+        return repository.findByCourierIdAndStatusLike(courier, status);
+    }
+
+
 }

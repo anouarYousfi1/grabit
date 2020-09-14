@@ -18,41 +18,44 @@ import Order from "./components/order/Order";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { SignupProvider } from "./contexts/SignupContext";
 import { UserProvider } from "./contexts/userContext";
+import { OrderProvider } from "./contexts/OrderContext";
 
 function App() {
   return (
     <SignupProvider>
       <UserProvider>
-        <Router>
-          <div className="App">
-            <Switch>
-              <Route exact path="/">
-                <Background />
-                <HeaderContent />
-                <SignUpModal />
-                <Content />
-                <Section />
-                <Footer />
-              </Route>
+        <OrderProvider>
+          <Router>
+            <div className="App">
+              <Switch>
+                <Route exact path="/">
+                  <Background />
+                  <HeaderContent />
+                  <SignUpModal />
+                  <Content />
+                  <Section />
+                  <Footer />
+                </Route>
 
-              <Route path="/signup/customer">
-                <Signup number="1" />
-              </Route>
+                <Route path="/signup/customer">
+                  <Signup number="1" />
+                </Route>
 
-              <Route path="/signup/driver">
-                <Signup number="0" />
-              </Route>
+                <Route path="/signup/driver">
+                  <Signup number="0" />
+                </Route>
 
-              <Route path="/profile">
-                <Profile />
-              </Route>
+                <Route path="/profile">
+                  <Profile />
+                </Route>
 
-              <Route path="/order">
-                <Order />
-              </Route>
-            </Switch>
-          </div>
-        </Router>
+                <Route path="/order">
+                  <Order />
+                </Route>
+              </Switch>
+            </div>
+          </Router>
+        </OrderProvider>
       </UserProvider>
     </SignupProvider>
   );

@@ -1,8 +1,11 @@
 import React from "react";
-
-const ProfileDataHeader = () => {
+import DropDownMenu from "../common/DropDownMenu";
+const ProfileDataHeader = (props) => {
   return (
-    <div className="content__container--data--header">Profile Settings</div>
+    <div className="content__container--data--header">
+      <h6 className="header__data">Profile Settings</h6>
+      <DropDownMenu />
+    </div>
   );
 };
 

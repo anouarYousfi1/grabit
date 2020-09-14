@@ -16,4 +16,9 @@ public interface OrderService {
     List<Order> getMyOrders(Courier courier);
 
     Order findOrderById(Integer id);
+
+    List<Order> getOrdersByStatus(Customer customer, String status);
+
+    List<Order> getOrdersByStatus(Courier courier , String status);
+
 }

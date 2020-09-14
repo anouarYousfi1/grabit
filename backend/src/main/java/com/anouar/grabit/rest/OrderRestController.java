@@ -92,9 +92,6 @@ public class OrderRestController {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
-
-
-
     private ResponseEntity<List<Order>> getListOrders(List<Order> myOrders, @RequestBody User user) {
         List<Order> orders = myOrders;
 
@@ -103,6 +100,7 @@ public class OrderRestController {
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
 
     @PostMapping("/setOrderState")
     public ResponseEntity<String> setOrder(@RequestBody Order order){
@@ -130,11 +128,40 @@ public class OrderRestController {
         orderToGet = orderService.findOrderById(order.getId());
 
         if(orderToGet == null)
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         else
             return new ResponseEntity<Order>(orderToGet, HttpStatus.OK);
 
 
     }
+
+    // getting orders By Status
+
+    @PostMapping("/customer/getOrders/{status}")
+    public ResponseEntity<List<Order>> getPickedUpOrders(@RequestBody Customer customer, @PathVariable("status") String status ){
+
+        Customer customerToFind = customerService.findCustomerById(customer.getId());
+        if(status == "null")
+            return getListOrders(orderService.getOrdersByStatus(customerToFind, null), customerToFind);
+
+        return getListOrders(orderService.getOrdersByStatus(customerToFind, status), customerToFind);
+    }
+
+    @PostMapping("/driver/getOrders/{status}")
+    public ResponseEntity<List<Order>> getPickedUpOrders(@RequestBody Courier courier, @PathVariable("status") String status){
+
+        Courier courierToFind = courierService.findCourierById(courier.getId());
+        if(status == "null")
+            return getListOrders(orderService.getOrdersByStatus(courierToFind, null), courierToFind);
+
+        return getListOrders(orderService.getOrdersByStatus(courierToFind, status), courierToFind);
+    }
+
+
+
+
+
+
+
 
 }
