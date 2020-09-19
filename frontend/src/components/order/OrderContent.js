@@ -3,7 +3,7 @@ import "../../style/OrderContent.css";
 import OrderItem from "../order/OrderItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import Map from "./Map";
+import Map from "../common/Map";
 
 const OrderContent = () => {
   const [Orders, setOrders] = useState([

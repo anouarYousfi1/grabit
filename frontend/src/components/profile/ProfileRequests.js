@@ -2,19 +2,39 @@ import React, { useState, useEffect, useContext } from "react";
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
 import { orderContext } from "../../contexts/OrderContext";
-import { Table, Form } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import SelectOptions from "../common/SelectOptions";
+import { Redirect, useHistory } from "react-router-dom";
 
 const ProfileRequests = () => {
   const [User, setUser] = useContext(userContext);
   const [Orders, setOrders] = useContext(orderContext);
   const [Order, setOrder] = useState({});
-  //const [orderStatus, setOrderStatus] = useState(undefined);
+  const history = useHistory();
 
   const customerOrdersURL = process.env.REACT_APP_GET_CUSTOMER_ORDERS_URL;
   const driverOrdersURL = process.env.REACT_APP_GET_DRIVER_ORDERS_URL;
   const driverSetOrderURL = process.env.REACT_APP_DRIVER_SET_ORDER_URL;
   const orderStatusURL = process.env.REACT_APP_GET_ORDER_STATUS;
+
+  let trackCol = null;
+  let trackRow = null;
+
+  const Redirect = () => {
+    history.push("/track");
+  };
+
+  if (User.type === 1) {
+    trackCol = <th scope="col"></th>;
+
+    trackRow = (
+      <td>
+        <Button onClick={Redirect} variant="primary" disabled>
+          track order
+        </Button>
+      </td>
+    );
+  }
 
   const setOrderState = (e) => {
     setOrder({
@@ -26,19 +46,35 @@ const ProfileRequests = () => {
   const selectRowHandler = (e) => {
     let selectedRow = e.currentTarget;
 
-    document.addEventListener("click", (event) => {
-      let isClickInside = selectedRow.contains(event.target);
+    if (User.type === 2) {
+      document.addEventListener("click", (event) => {
+        let isClickInside = selectedRow.contains(event.target);
 
-      if (isClickInside) {
-        selectedRow.lastChild.firstChild[0].removeAttribute("disabled");
-        setOrder({
-          id: selectedRow.firstChild.textContent,
-          status: undefined,
-        });
-      } else {
-        selectedRow.lastChild.firstChild[0].setAttribute("disabled", "");
-      }
-    });
+        if (isClickInside) {
+          selectedRow.lastChild.firstChild[0].removeAttribute("disabled");
+          setOrder({
+            id: selectedRow.firstChild.textContent,
+            status: undefined,
+          });
+        } else {
+          selectedRow.lastChild.firstChild[0].setAttribute("disabled", "");
+        }
+      });
+    } else {
+      document.addEventListener("click", (event) => {
+        let isClickInside = selectedRow.contains(event.target);
+
+        if (event.target && event.target.type === "button") {
+          history.push("/track");
+        }
+
+        if (isClickInside) {
+          selectedRow.lastChild.firstChild.removeAttribute("disabled");
+        } else {
+          selectedRow.lastChild.firstChild.setAttribute("disabled", "");
+        }
+      });
+    }
   };
 
   const setStatusRender = (orderStatus) => {
@@ -156,6 +192,7 @@ const ProfileRequests = () => {
               <th scope="col">source</th>
               <th scope="col">destination</th>
               <th scope="col">status</th>
+              {trackCol}
             </tr>
           </thead>
           <tbody>
@@ -168,6 +205,7 @@ const ProfileRequests = () => {
                   <td>{order.source}</td>
                   <td>{order.destination}</td>
                   <td>{setStatusRender(order.status)}</td>
+                  {trackRow}
                 </tr>
               );
             })}

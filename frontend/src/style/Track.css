@@ -1,0 +1,16 @@
+.track__map {
+  width: 50%;
+  height: 80%;
+}
+
+.trackmap__container {
+  width: 100%;
+  height: 100%;
+}
+
+.flex__track__map {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

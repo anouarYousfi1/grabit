@@ -1,16 +1,12 @@
-import React, { useEffect, useContext } from "react";
-import { useHistory, Redirect } from "react-router-dom";
-import ProfileHeader from "./ProfileHeader";
-import ProfileContent from "./ProfileContent";
-import ProfileController from "../../js/ProfileController";
+import React, { useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import Map from "../common/Map";
+import ProfileHeader from "../profile/ProfileHeader";
 import { userContext } from "../../contexts/userContext";
-import LocateUser from "../common/LocateUser";
+import "../../style/Track.css";
 
-import "../../style/Profile.css";
-
-const Profile = (props) => {
+const Track = () => {
   const [User, setUser] = useContext(userContext);
-
   const url = process.env.REACT_APP_GET_USER_URL;
   const history = useHistory();
 
@@ -59,20 +55,18 @@ const Profile = (props) => {
 
   useEffect(() => {
     fetchData();
-    ProfileController();
   }, []);
 
-  if (User.isLoggedIn) {
-    return (
-      <div className="profile__container">
-        <ProfileHeader />
-        <ProfileContent />
-        <LocateUser />
+  return (
+    <div className="trackmap__container">
+      <ProfileHeader />
+      <div className="flex__track__map">
+        <div className="track__map">
+          <Map />
+        </div>
       </div>
-    );
-  } else {
-    return <Redirect to="/" />;
-  }
+    </div>
+  );
 };
 
-export default Profile;
+export default Track;

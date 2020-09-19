@@ -51,3 +51,7 @@ h1 {
 table {
   overflow: hidden;
 }
+
+#hidden__map {
+  display: none;
+}

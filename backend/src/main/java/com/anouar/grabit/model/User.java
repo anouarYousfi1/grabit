@@ -119,11 +119,6 @@ public class User extends BaseEntity implements Serializable {
     }
 
 
-
-
-
-
-
     @Override
     public String toString() {
         return new ToStringCreator(this)

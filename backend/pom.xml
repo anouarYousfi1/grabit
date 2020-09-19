@@ -57,6 +57,16 @@
 			<version>2.2.3.RELEASE</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.corundumstudio.socketio</groupId>
+			<artifactId>netty-socketio</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

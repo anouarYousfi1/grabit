@@ -27,7 +27,7 @@ public class CourierRestController {
 
     private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-    private static String KEY = "DRIVERS";
+    private static String KEY = "CUSTOMERS";
 
     @GetMapping("/")
     public String getDrivers(HttpSession session) {
