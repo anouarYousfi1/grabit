@@ -226,3 +226,76 @@ input[type="text"] {
   float: right;
   margin-top: -30px;
 }
+
+.profile__menu {
+  display: none;
+  flex-direction: column;
+  background-color: rgba(165, 165, 165, 0.8);
+  position: absolute;
+  top: 100px;
+  right: 0;
+  height: 100%;
+  width: 90%;
+  z-index: 100;
+  animation: toggle 300ms linear;
+  align-items: center;
+}
+
+.profile__menu h4 {
+  display: flex;
+  margin-top: 20px;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  height: 3em;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes toggle {
+  0% {
+    right: -90%;
+  }
+  50% {
+    right: -45%;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .content__container--choices {
+    display: none;
+  }
+
+  .profile__data__container {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .content__container {
+    margin-top: 50px;
+  }
+  .content__container--data--content--picture {
+    order: 1;
+    margin-top: 150px;
+    margin-left: 70px;
+  }
+  .content__container--data--content--form {
+    order: 2;
+    width: 100%;
+  }
+  .content__container--data {
+    display: flex;
+  }
+
+  .content__container--data--content {
+    flex-direction: column;
+  }
+
+  .content__container--data--content--form > form {
+    margin-left: unset;
+  }
+}

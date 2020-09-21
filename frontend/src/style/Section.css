@@ -72,3 +72,26 @@
 .order__button > h4 {
   margin-right: 10px;
 }
+
+@media only screen and (max-width: 750px) {
+  .section > img {
+    width: 80%;
+    height: 80%;
+  }
+
+  .section__text--heading {
+    font-size: 3em;
+  }
+  .section__text--paragraph {
+    font-size: 1.5em;
+  }
+
+  #order__input {
+    font-size: 1em;
+    width: 70%;
+  }
+
+  .order__button {
+    width: 7em;
+  }
+}

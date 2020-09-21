@@ -17,3 +17,9 @@
 .footer > a:first-child {
   margin-left: 100px;
 }
+
+@media only screen and (max-width: 750px) {
+  .footer > a:first-child {
+    margin-left: 50px;
+  }
+}

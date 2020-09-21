@@ -51,10 +51,6 @@ const LocateUser = () => {
     LocateUser();
   }, []);
 
-  useEffect(() => {
-    console.log(Location);
-  }, [Location]);
-
   return <div id="hidden__map"></div>;
 };
 

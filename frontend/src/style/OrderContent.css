@@ -159,3 +159,29 @@
   width: 100px;
   margin-bottom: 10px;
 }
+
+@media only screen and (max-width: 1400px) {
+  .order__content__main {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .order__content__main--content {
+    flex-direction: column;
+  }
+
+  .order__content__main--content--order--form {
+    padding-left: unset;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content__order__time {
+    margin-left: unset;
+  }
+  .content__order__cost {
+    justify-content: center;
+    align-items: center;
+  }
+}

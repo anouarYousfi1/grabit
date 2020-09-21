@@ -11,15 +11,17 @@ const Signup = (props) => {
   return (
     <div className="signup__container">
       <SignupHeader />
-      <div className="signup">
-        <FacebookButton
-          key={Signups[props.number].id}
-          headline={Signups[props.number].headline}
-          link={Signups[props.number].link}
-          strong={Signups[props.number].strong}
-          number={props.number}
-          mode={mode}
-        />
+      <div className="signup__container--content">
+        <div className="signup">
+          <FacebookButton
+            key={Signups[props.number].id}
+            headline={Signups[props.number].headline}
+            link={Signups[props.number].link}
+            strong={Signups[props.number].strong}
+            number={props.number}
+            mode={mode}
+          />
+        </div>
       </div>
     </div>
   );
