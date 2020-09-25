@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import "./style/App.css";
 import Background from "./components/home/Background";
 import HeaderContent from "./components/home/HeaderContent";
@@ -19,8 +19,19 @@ import { SignupProvider } from "./contexts/SignupContext";
 import { UserProvider } from "./contexts/userContext";
 import { OrderProvider } from "./contexts/OrderContext";
 import { LocationProvider } from "./contexts/LocationContext";
+import { notificationContext } from "./contexts/NotificationContext";
+
+import { NotificationContainer } from "react-notifications";
+import Notification from "./components/common/Notification";
 
 function App() {
+  const [notification, setNotification] = useContext(notificationContext);
+
+  let notif = null;
+  if (notification != null) {
+    notif = <Notification message={notification} />;
+  }
+
   return (
     <SignupProvider>
       <UserProvider>
@@ -60,6 +71,8 @@ function App() {
                 </Switch>
 
                 <SocketIOClient />
+                {notif}
+                <NotificationContainer />
               </div>
             </Router>
           </LocationProvider>

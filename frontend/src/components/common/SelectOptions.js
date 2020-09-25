@@ -17,6 +17,7 @@ const SelectOptions = (props) => {
           disabled
         >
           <option></option>
+          <option>accepted</option>
           <option>picked</option>
           <option>delivered</option>
         </Form.Control>

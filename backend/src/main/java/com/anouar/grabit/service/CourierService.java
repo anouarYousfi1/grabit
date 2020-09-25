@@ -16,4 +16,6 @@ public interface CourierService {
 
     Courier findCourierByEmail(String email);
 
+    List<Courier> findCouriersByStatus(Boolean status);
+
 }

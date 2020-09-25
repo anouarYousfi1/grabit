@@ -103,6 +103,7 @@ const Profile = (props) => {
         </Link>
         <ProfileHeader />
         <ProfileContent />
+
         <LocateUser />
       </div>
     );

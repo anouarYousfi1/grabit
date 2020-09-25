@@ -43,4 +43,9 @@ public class CourierServiceImpl implements CourierService{
     public Courier findCourierByEmail(String email) {
         return repository.findByEmail(email);
     }
+
+    @Override
+    public List<Courier> findCouriersByStatus(Boolean status) {
+        return repository.findByActif(status);
+    }
 }

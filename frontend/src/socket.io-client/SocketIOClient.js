@@ -1,22 +1,26 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import { userContext } from "../contexts/userContext";
 import { orderContext } from "../contexts/OrderContext";
 import { locationContext } from "../contexts/LocationContext";
-import L from "leaflet";
+import { notificationContext } from "../contexts/NotificationContext";
 
 const SocketIOClient = () => {
   const [User, setUser] = useContext(userContext);
   const [Orders, setOrders] = useContext(orderContext);
   const [Location, setLocation] = useContext(locationContext);
+  const [Notification, setNotification] = useContext(notificationContext);
+
   const locationRef = useRef(Location);
 
   const CONNECTED = "connected";
   const POST_LOCATION = "PostLocation";
   const DRIVER_LOCATION = "RedirectLocation";
+  const NEW_ORDER = "NEW_ORDER";
 
   const socketioURL = process.env.REACT_APP_SOCKET_IO_URL;
   let socket = useRef(null);
+  let notification = null;
 
   useEffect(() => {
     if (Orders.length !== 0) {
@@ -62,15 +66,21 @@ const SocketIOClient = () => {
             type: locationdata.type,
           });
         });
+
+        socket.current.on(NEW_ORDER, (message) => {
+          setNotification(message);
+        });
       });
     }
-
-    console.log("i run so many times");
   }, [Orders]);
 
   useEffect(() => {
     locationRef.current = Location;
   }, [Location]);
+
+  useEffect(() => {
+    console.log("i'm rendering again");
+  });
 
   return <div></div>;
 };

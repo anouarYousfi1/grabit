@@ -50,5 +50,10 @@ public class OrderServiceImpl implements OrderService{
         return repository.findByCourierIdAndStatusLike(courier, status);
     }
 
+    @Override
+    public List<Order> getOrdersByStatus(String status) {
+        return repository.findByStatus(status);
+    }
+
 
 }

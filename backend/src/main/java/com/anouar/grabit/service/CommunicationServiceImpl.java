@@ -3,7 +3,6 @@ package com.anouar.grabit.service;
 import com.anouar.grabit.model.Location;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import org.assertj.core.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -20,9 +19,9 @@ import java.util.logging.Logger;
 @Service
 @CrossOrigin(exposedHeaders = "errors, content-type", allowCredentials = "true")
 
-public class SocketIOServiceImpl implements SocketIOService {
+public class CommunicationServiceImpl implements CommunicationService {
 
-    private Logger log = Logger.getLogger(SocketIOServiceImpl.class.getName());
+    private Logger log = Logger.getLogger(CommunicationServiceImpl.class.getName());
 
     /**
      * Store connected clients
@@ -137,11 +136,27 @@ public class SocketIOServiceImpl implements SocketIOService {
     }
 
     @Override
-    public void pushMessageToUser(String userId, String msgContent) {
-        SocketIOClient client = clientMap.get(userId);
-        if (client != null) {
-            client.sendEvent(PUSH_DATA_EVENT, msgContent);
-        }
+    public void pushMessageToUser(UUID uuid, String msgContent, String event) {
+
+            SocketIOClient client = socketIOServer.getClient(uuid);
+
+            if (client != null) {
+                client.sendEvent(event, msgContent);
+            }
+    }
+
+    @Override
+    public SocketIOServer getSocketIOServer() {
+        return socketIOServer;
+    }
+
+    @Override
+    public UUID getDriversUUID(Integer driversId) {
+       return driversMap.entrySet()
+                  .stream()
+                  .filter(driver -> driver.getValue().getUser() == driversId)
+                 .map(Map.Entry::getKey)
+                .findFirst().get();
     }
 
     /**

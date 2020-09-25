@@ -21,4 +21,6 @@ public interface OrderService {
 
     List<Order> getOrdersByStatus(Courier courier , String status);
 
+    List<Order> getOrdersByStatus(String status);
+
 }
