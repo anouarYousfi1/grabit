@@ -94,7 +94,7 @@ const ProfileRequests = () => {
     let options = {};
 
     switch (true) {
-      case "GET":
+      case method === "GET":
         options = {
           mode: "cors",
           method: method,

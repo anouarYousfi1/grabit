@@ -3,6 +3,7 @@ package com.anouar.grabit.service;
 import com.anouar.grabit.model.Courier;
 import com.anouar.grabit.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,18 +17,20 @@ public class AssignmentServiceImpl implements AssignmentService{
     private static Logger log = Logger.getLogger(AssignmentServiceImpl.class.getName());
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    CourierService courierService;
+    private CourierService courierService;
 
     @Autowired
-    CommunicationService communicationService;
+    private CommunicationService communicationService;
 
+    @Autowired
+    private Environment env;
 
     Thread mainThread;
     Thread secondaryThread;
-    Thread thirdThread;
+
 
     @PostConstruct
     @Override
@@ -80,7 +83,7 @@ public class AssignmentServiceImpl implements AssignmentService{
                             order.setCourierId(actifCouriers.get(courierNumber));
 
                             orderService.saveOrder(order);
-                            communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()),"new order", "NEW_ORDER");
+                            communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()),env.getProperty("message.new_order"), env.getProperty("event.new_order"));
                             synchronized (pendingOrders){
                                 pendingOrders.add(order);
                             }
@@ -95,6 +98,7 @@ public class AssignmentServiceImpl implements AssignmentService{
                                         if(checkOrder.getStatus() == null){
                                             log.info("the driver "+order.getCourierId().getFullName()+" didn't accept the order");
                                             synchronized (order.getCourierId()){
+                                                communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()),env.getProperty("message.rejected_order"), env.getProperty("event.rejected_order") );
                                                 order.setCourierId(null);
                                                 orderService.saveOrder(order);
                                                 synchronized (pendingOrders){

@@ -10,20 +10,61 @@ const SocketIOClient = () => {
   const [Orders, setOrders] = useContext(orderContext);
   const [Location, setLocation] = useContext(locationContext);
   const [Notification, setNotification] = useContext(notificationContext);
-
+  const [updated, setUpdated] = useState(false);
   const locationRef = useRef(Location);
 
   const CONNECTED = "connected";
   const POST_LOCATION = "PostLocation";
   const DRIVER_LOCATION = "RedirectLocation";
   const NEW_ORDER = "NEW_ORDER";
+  const ORDER_REJECTED = "REJECTED_ORDER";
+  const driverOrdersURL = process.env.REACT_APP_GET_DRIVER_ORDERS_URL;
 
   const socketioURL = process.env.REACT_APP_SOCKET_IO_URL;
   let socket = useRef(null);
-  let notification = null;
+
+  const fetchData = (url, method) => {
+    let options = {};
+
+    if (method === "POST" && url === driverOrdersURL)
+      options = {
+        mode: "cors",
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: User.userID,
+        }),
+        credentials: "include",
+      };
+
+    fetch(url, options)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        data.map((d) => {
+          setOrders([
+            ...Orders,
+            {
+              id: d.id,
+              time: d.time,
+              date: d.date,
+              source: d.source,
+              destination: d.destination,
+              status: d.status,
+            },
+          ]);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
-    if (Orders.length !== 0) {
+    if (Orders.length !== 0 && !updated) {
       socket.current = socketIOClient(socketioURL);
 
       socket.current.on(CONNECTED, (data) => {
@@ -69,6 +110,14 @@ const SocketIOClient = () => {
 
         socket.current.on(NEW_ORDER, (message) => {
           setNotification(message);
+          setOrders([]);
+          setUpdated(true);
+        });
+
+        socket.current.on(ORDER_REJECTED, (message) => {
+          setNotification(message);
+          setOrders([]);
+          setUpdated(true);
         });
       });
     }
@@ -79,8 +128,8 @@ const SocketIOClient = () => {
   }, [Location]);
 
   useEffect(() => {
-    console.log("i'm rendering again");
-  });
+    if (updated === true) fetchData(driverOrdersURL, "POST");
+  }, [updated]);
 
   return <div></div>;
 };
