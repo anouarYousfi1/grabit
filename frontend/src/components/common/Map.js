@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import L from "leaflet";
 import "../../style/Map.css";
 import "leaflet-routing-machine";
@@ -6,9 +6,14 @@ import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { locationContext } from "../../contexts/LocationContext";
 import { userContext } from "../../contexts/userContext";
 
-const Map = () => {
+const Map = (props) => {
   const [Location, setLocation] = useContext(locationContext);
   const [User, setUser] = useContext(userContext);
+  const [removeControl, setRemoveControl] = useState(null);
+  let map;
+  let firstResults = null,
+    secondResults = null;
+
   const getResults = async (source, destination) => {
     const provider = new OpenStreetMapProvider();
 
@@ -24,12 +29,8 @@ const Map = () => {
   };
 
   useEffect(() => {
-    let firstResults = null,
-      secondResults = null;
-
-    let removeControl = null;
     // create map
-    let map = L.map("map", {
+    map = L.map("map", {
       center: [49.47748, 8.4],
       zoom: 12,
     });
@@ -85,10 +86,17 @@ const Map = () => {
         break;
     }
     const addTrack = (e) => {
-      e.preventDefault();
+      if (e && e.preventDefault) e.preventDefault();
+      let source = null;
+      let destination = null;
 
-      const source = tracker_form.elements["source"].value;
-      const destination = tracker_form.elements["destination"].value;
+      if (tracker_form) {
+        source = tracker_form.elements["source"].value;
+        destination = tracker_form.elements["destination"].value;
+      } else if (props.source && props.destination) {
+        source = props.source;
+        destination = props.destination;
+      }
 
       getResults(source, destination).then((results) => {
         if (removeControl !== null) map.removeControl(removeControl);
@@ -98,20 +106,41 @@ const Map = () => {
 
         console.log(firstResults, secondResults);
 
-        removeControl = L.Routing.control({
-          waypoints: [
-            L.latLng(firstResults.y, firstResults.x),
-            L.latLng(secondResults.y, secondResults.x),
-          ],
-          addWaypoints: true,
-          routeWhileDragging: false,
-        }).addTo(map);
+        if (firstResults && secondResults) {
+          setRemoveControl(
+            L.Routing.control({
+              waypoints: [
+                L.latLng(firstResults.y, firstResults.x),
+                L.latLng(secondResults.y, secondResults.x),
+              ],
+              addWaypoints: true,
+              routeWhileDragging: false,
+            }).addTo(map)
+          );
+        }
       });
       console.log("added");
     };
 
     if (tracker_form) tracker_form.addEventListener("submit", addTrack);
+    if (props.source && props.destination) addTrack();
   }, []);
+
+  useEffect(() => {
+    if (removeControl && Location && removeControl.getWaypoints().length == 3) {
+      removeControl.spliceWaypoints(
+        0,
+        1,
+        L.latLng(Location.latitude, Location.longitude)
+      );
+    } else {
+      if (removeControl && Location)
+        removeControl.setWaypoints([
+          L.latLng(Location.latitude, Location.longitude),
+          ...removeControl.getWaypoints(),
+        ]);
+    }
+  }, [Location, removeControl]);
 
   return <div id="map"></div>;
 };

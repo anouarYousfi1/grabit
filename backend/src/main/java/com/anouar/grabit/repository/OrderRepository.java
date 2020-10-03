@@ -2,6 +2,7 @@ package com.anouar.grabit.repository;
 
 import com.anouar.grabit.model.Courier;
 import com.anouar.grabit.model.Customer;
+import com.anouar.grabit.model.Items;
 import com.anouar.grabit.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByCourierIdAndStatusLike(Courier courier, String status);
 
     List<Order> findByStatus(String status);
+
 }

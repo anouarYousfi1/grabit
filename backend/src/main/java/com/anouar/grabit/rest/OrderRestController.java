@@ -5,13 +5,10 @@ import com.anouar.grabit.service.CourierService;
 import com.anouar.grabit.service.CustomerService;
 import com.anouar.grabit.service.ItemsService;
 import com.anouar.grabit.service.OrderService;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -108,7 +105,7 @@ public class OrderRestController {
         Order orderToSet = orderService.findOrderById(order.getId());
 
         LOG.info(String.valueOf(order.getId()) );
-        LOG.info(   order.getStatus());
+        LOG.info(order.getStatus());
 
 
         if(orderToSet != null) {

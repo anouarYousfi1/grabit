@@ -1,5 +1,5 @@
-const getOrderState = (orderStatus) => {
-  const select__form = document.querySelector("#select__form");
+const getOrderState = (orderStatus, index) => {
+  const select__form = document.querySelector("#select__form__" + index);
 
   let optionsArray = [...select__form];
 

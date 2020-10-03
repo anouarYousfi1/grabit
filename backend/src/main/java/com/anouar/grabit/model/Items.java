@@ -11,7 +11,7 @@ public class Items extends BaseEntity{
 
 
     private String name;
-    List<Order> orders;
+    private List<Order> orders;
 
 
     @Column(name = "name")

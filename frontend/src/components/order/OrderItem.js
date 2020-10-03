@@ -2,7 +2,6 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import "../../style/OrderItem.css";
-import OrderController from "../../js/OrderController";
 
 const OrderItem = (props) => {
   let icon;

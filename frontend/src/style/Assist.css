@@ -1,0 +1,47 @@
+.assist__container {
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 100%;
+}
+
+.assist__container--content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 100px);
+}
+
+.assist__container--content--data {
+  display: flex;
+  width: 60%;
+  height: 80%;
+  background-color: white;
+}
+
+.assist__container--content--data--info {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.assist__container--content--data--map {
+  width: 50%;
+  height: 100%;
+}
+
+.assist__container--content--data--map > #map {
+  height: 100%;
+}
+
+.select__order__form {
+  width: 80%;
+}
+
+.order__details__input {
+  width: 80%;
+  margin-bottom: 10px;
+}

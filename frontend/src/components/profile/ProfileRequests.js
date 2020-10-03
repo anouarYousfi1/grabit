@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
-import { orderContext } from "../../contexts/OrderContext";
+import { ordersContext } from "../../contexts/OrdersContext";
 import { Table, Button } from "react-bootstrap";
 import SelectOptions from "../common/SelectOptions";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const ProfileRequests = () => {
   const [User, setUser] = useContext(userContext);
-  const [Orders, setOrders] = useContext(orderContext);
+  const [Orders, setOrders] = useContext(ordersContext);
   const [Order, setOrder] = useState({});
   const history = useHistory();
 
@@ -77,12 +77,14 @@ const ProfileRequests = () => {
     }
   };
 
-  const setStatusRender = (orderStatus) => {
+  const setStatusRender = (orderStatus, index) => {
     if (User.type === 2) {
       return (
         <SelectOptions
           status={orderStatus}
           setOrderState={setOrderState}
+          disabled={1}
+          index={index}
         ></SelectOptions>
       );
     } else if (User.type === 1) {
@@ -142,7 +144,7 @@ const ProfileRequests = () => {
       .then((data) => {
         if (url !== driverSetOrderURL && url !== orderStatusURL) {
           data.map((d) => {
-            setOrders([
+            setOrders((Orders) => [
               ...Orders,
               {
                 id: d.id,
@@ -204,7 +206,7 @@ const ProfileRequests = () => {
                   <td>{order.date}</td>
                   <td>{order.source}</td>
                   <td>{order.destination}</td>
-                  <td>{setStatusRender(order.status)}</td>
+                  <td>{setStatusRender(order.status, i)}</td>
                   {trackRow}
                 </tr>
               );

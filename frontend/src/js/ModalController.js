@@ -1,5 +1,4 @@
 const modalController = () => {
-  const modal = document.querySelector(".modal__container");
   const container = document.querySelector(".container__modal");
   const signin = document.querySelector("#login");
   const signinMenu = document.querySelector("#login__menu");

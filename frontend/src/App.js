@@ -11,14 +11,14 @@ import Profile from "./components/profile/Profile";
 import Order from "./components/order/Order";
 import SocketIOClient from "./socket.io-client/SocketIOClient";
 import Track from "./components/track/Track";
-
-import L from "leaflet";
+import Assist from "./components/assist/Assist";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { SignupProvider } from "./contexts/SignupContext";
 import { UserProvider } from "./contexts/userContext";
-import { OrderProvider } from "./contexts/OrderContext";
+import { OrdersProvider } from "./contexts/OrdersContext";
 import { LocationProvider } from "./contexts/LocationContext";
+import { OrderProvider } from "./contexts/OrderContext";
 import { notificationContext } from "./contexts/NotificationContext";
 
 import { NotificationContainer } from "react-notifications";
@@ -35,48 +35,54 @@ function App() {
   return (
     <SignupProvider>
       <UserProvider>
-        <OrderProvider>
+        <OrdersProvider>
           <LocationProvider>
-            <Router>
-              <div className="App">
-                <Switch>
-                  <Route exact path="/">
-                    <Background />
-                    <HeaderContent />
-                    <SignUpModal />
-                    <Content />
-                    <Section />
-                    <Footer />
-                  </Route>
+            <OrderProvider>
+              <Router>
+                <div className="App">
+                  <Switch>
+                    <Route exact path="/">
+                      <Background />
+                      <HeaderContent />
+                      <SignUpModal />
+                      <Content />
+                      <Section />
+                      <Footer />
+                    </Route>
 
-                  <Route path="/signup/customer">
-                    <Signup number="1" />
-                  </Route>
+                    <Route path="/signup/customer">
+                      <Signup number="1" />
+                    </Route>
 
-                  <Route path="/signup/driver">
-                    <Signup number="0" />
-                  </Route>
+                    <Route path="/signup/driver">
+                      <Signup number="0" />
+                    </Route>
 
-                  <Route path="/profile">
-                    <Profile />
-                  </Route>
+                    <Route path="/profile">
+                      <Profile />
+                    </Route>
 
-                  <Route path="/order">
-                    <Order />
-                  </Route>
+                    <Route path="/order">
+                      <Order />
+                    </Route>
 
-                  <Route path="/track">
-                    <Track />
-                  </Route>
-                </Switch>
+                    <Route path="/track">
+                      <Track />
+                    </Route>
 
-                <SocketIOClient />
-                {notif}
-                <NotificationContainer />
-              </div>
-            </Router>
+                    <Route path="/assist">
+                      <Assist />
+                    </Route>
+                  </Switch>
+
+                  <SocketIOClient />
+                  {notif}
+                  <NotificationContainer />
+                </div>
+              </Router>
+            </OrderProvider>
           </LocationProvider>
-        </OrderProvider>
+        </OrdersProvider>
       </UserProvider>
     </SignupProvider>
   );
