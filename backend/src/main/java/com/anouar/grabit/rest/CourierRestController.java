@@ -78,4 +78,11 @@ public class CourierRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @PostMapping("/getState")
+    public ResponseEntity<Boolean> getState(@RequestBody Courier courier){
+        Boolean state = service.findCourierById(courier.getId()).getActif();
+        return new ResponseEntity<>(state, HttpStatus.OK);
+    }
+
+
 }

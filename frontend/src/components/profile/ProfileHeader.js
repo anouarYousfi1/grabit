@@ -6,13 +6,16 @@ import "../../style/ProfileHeader.css";
 import { Link } from "react-router-dom";
 import { userContext } from "../../contexts/userContext";
 import Logout from "../common/Logout";
+import Toggle from "react-bootstrap-toggle";
 import { Form } from "react-bootstrap";
 
 const ProfileHeader = () => {
   const [User, setUser] = useContext(userContext);
-  const [Active, setActive] = useState(false);
+  const [Active, setActive] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
   const url = process.env.REACT_APP_LOGOUT_URL;
   const setStateUrl = process.env.REACT_APP_DRIVER_SET_STATE_URL;
+  const getStateUrl = process.env.REACT_APP_DRIVER_GET_STATE_URL;
   let orderButton = null;
   let toggleButton = null;
   let assistButton = null;
@@ -42,7 +45,7 @@ const ProfileHeader = () => {
     setActive(!Active);
   };
 
-  if (User.type == 2) {
+  if (User.type == 2 && Active != null) {
     toggleButton = (
       // <Toggle
       //   onClick={toggleState}
@@ -60,6 +63,7 @@ const ProfileHeader = () => {
           label="Take Control"
           onClick={toggleState}
           size="lg"
+          checked={Active}
         />
       </Form>
     );
@@ -95,12 +99,50 @@ const ProfileHeader = () => {
       });
   };
 
+  const getState = (stateUrl, method) => {
+    fetch(stateUrl, {
+      method: method,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: User.userID,
+        fullName: User.name,
+        address: "33 rue demnat",
+        city: "oujda",
+        telephone: "087654323",
+        email: User.email,
+        password: "yas1995",
+        picture: User.picture,
+      }),
+      credentials: "include",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setActive(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
-    setUser({
-      ...User,
-      actif: Active,
-    });
-    if (User) setState(setStateUrl, "POST");
+    if (User.isLoggedIn) getState(getStateUrl, "POST");
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      setUser({
+        ...User,
+        actif: Active,
+      });
+      if (User) setState(setStateUrl, "POST");
+    }
   }, [Active]);
 
   return (
