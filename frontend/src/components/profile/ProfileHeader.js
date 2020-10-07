@@ -131,12 +131,12 @@ const ProfileHeader = () => {
   };
 
   useEffect(() => {
-    if (User.isLoggedIn) getState(getStateUrl, "POST");
+    if (User.type == 2 && User.isLoggedIn) getState(getStateUrl, "POST");
     setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && User && User.type == 2) {
       setUser({
         ...User,
         actif: Active,
