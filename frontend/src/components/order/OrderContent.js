@@ -171,7 +171,9 @@ const OrderContent = () => {
               />
             </div>
 
-            <Map />
+            <div className="map__container">
+              <Map />
+            </div>
           </div>
         </div>
       </div>
