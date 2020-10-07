@@ -92,6 +92,7 @@ const AssistOrdersMenu = (props) => {
 
   useEffect(() => {
     fetchDataUser();
+    setOrders([]);
     console.log(User);
   }, []);
 
@@ -100,7 +101,7 @@ const AssistOrdersMenu = (props) => {
       fetchData(url, "POST");
       console.log("running");
     }
-  }, [User]);
+  }, [User.isLoggedIn]);
 
   return (
     <Form className="select__order__form">

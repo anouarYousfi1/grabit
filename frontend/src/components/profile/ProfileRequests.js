@@ -164,6 +164,10 @@ const ProfileRequests = () => {
   };
 
   useEffect(() => {
+    setOrders([]);
+  }, []);
+
+  useEffect(() => {
     switch (User.type) {
       case 1:
         fetchData(customerOrdersURL, "POST");

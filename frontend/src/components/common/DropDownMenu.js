@@ -79,7 +79,7 @@ const DropDownMenu = () => {
       })
       .then((data) => {
         data.map((d) => {
-          setOrders([
+          setOrders((Orders) => [
             ...Orders,
             {
               id: d.id,

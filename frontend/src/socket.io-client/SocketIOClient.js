@@ -45,7 +45,7 @@ const SocketIOClient = () => {
       })
       .then((data) => {
         data.map((d) => {
-          setOrders([
+          setOrders((Orders) => [
             ...Orders,
             {
               id: d.id,
@@ -64,9 +64,14 @@ const SocketIOClient = () => {
   };
 
   useEffect(() => {
-    if (Orders.length !== 0 && !updated) {
+    if (User.isLoggedIn) {
+      console.log("socket created more than once");
       socket.current = socketIOClient(socketioURL);
+    }
+  }, [User.isLoggedIn]);
 
+  useEffect(() => {
+    if (Orders.length !== 0 && !updated) {
       socket.current.on(CONNECTED, (data) => {
         console.log(data);
 

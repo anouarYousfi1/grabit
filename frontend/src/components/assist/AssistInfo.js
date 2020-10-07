@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import SelectOptions from "../common/SelectOptions";
 import AssistController from "../../js/AssistController";
-import AssistOrderMenu from "./AssistOrdersMenu";
+import AssistOrdersMenu from "./AssistOrdersMenu";
 import OrderItems from "../common/OrderItems";
 import { ordersContext } from "../../contexts/OrdersContext";
 import { orderContext } from "../../contexts/OrderContext";
@@ -58,11 +58,15 @@ const AssistInfo = () => {
       fetchData(driverSetOrderURL);
   }, [Order]);
 
+  useEffect(() => {
+    console.log("im being run ...");
+  }, []);
+
   return (
     <div className="assist__container--content--data--info">
       <form action="" id="orderDetails"></form>
 
-      <AssistOrderMenu orderSelectHandler={orderSelectHandler} />
+      <AssistOrdersMenu orderSelectHandler={orderSelectHandler} />
 
       <label htmlFor="">Items</label>
       <OrderItems key={Order.id} order={Order} />

@@ -6,7 +6,6 @@ import "../../style/ProfileHeader.css";
 import { Link } from "react-router-dom";
 import { userContext } from "../../contexts/userContext";
 import Logout from "../common/Logout";
-import Toggle from "react-bootstrap-toggle";
 import { Form } from "react-bootstrap";
 
 const ProfileHeader = () => {
@@ -16,6 +15,17 @@ const ProfileHeader = () => {
   const setStateUrl = process.env.REACT_APP_DRIVER_SET_STATE_URL;
   let orderButton = null;
   let toggleButton = null;
+  let assistButton = null;
+
+  if (User.type == 2 && User.actif === true) {
+    assistButton = (
+      <Link to="/assist">
+        <div className="orderButton">
+          <h4>Start Delivering</h4>
+        </div>
+      </Link>
+    );
+  }
 
   if (User.type == 1) {
     orderButton = (
@@ -96,6 +106,7 @@ const ProfileHeader = () => {
   return (
     <SignupHeader>
       {orderButton}
+      {assistButton}
 
       <div className="user">
         <h4 className="user__name">{User.name}</h4>
