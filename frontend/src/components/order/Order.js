@@ -6,6 +6,7 @@ import { userContext } from "../../contexts/userContext";
 import Logout from "../common/Logout";
 import { Alert } from "react-bootstrap";
 import { useHistory, Redirect } from "react-router-dom";
+import SlidingMenu from "../common/SlidingMenu";
 
 const Order = () => {
   const [User, setUser] = useContext(userContext);
@@ -155,6 +156,7 @@ const Order = () => {
   if (User.isLoggedIn) {
     return (
       <div className="order__container">
+        <SlidingMenu />
         <SignupHeader>
           <div className="order__user">
             <h4 className="user__name">{User.name}</h4>
