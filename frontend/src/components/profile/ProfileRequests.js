@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
 import "../../style/ProfileContent.css";
 import { userContext } from "../../contexts/userContext";
 import { ordersContext } from "../../contexts/OrdersContext";
-import { Table, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import SelectOptions from "../common/SelectOptions";
 import { useHistory } from "react-router-dom";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 
 const ProfileRequests = () => {
   const [User, setUser] = useContext(userContext);
@@ -25,7 +28,7 @@ const ProfileRequests = () => {
   };
 
   if (User.type === 1) {
-    trackCol = <th scope="col"></th>;
+    trackCol = <Th scope="col"></Th>;
 
     trackRow = (
       <td>
@@ -190,32 +193,32 @@ const ProfileRequests = () => {
     <div className="profile__requests">
       <div className="profile__requests--content">
         <Table className="table" responsive="true" hover>
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">time</th>
-              <th scope="col">date</th>
-              <th scope="col">source</th>
-              <th scope="col">destination</th>
-              <th scope="col">status</th>
+          <Thead className="thead-dark">
+            <Tr>
+              <Th scope="col">#</Th>
+              <Th scope="col">time</Th>
+              <Th scope="col">date</Th>
+              <Th scope="col">source</Th>
+              <Th scope="col">destination</Th>
+              <Th scope="col">status</Th>
               {trackCol}
-            </tr>
-          </thead>
-          <tbody>
+            </Tr>
+          </Thead>
+          <Tbody>
             {Orders.map((order, i) => {
               return (
-                <tr key={i} onClick={selectRowHandler.bind(this)}>
-                  <th scope="row">{order.id}</th>
-                  <td>{order.time}</td>
-                  <td>{order.date}</td>
-                  <td>{order.source}</td>
-                  <td>{order.destination}</td>
-                  <td>{setStatusRender(order.status, i)}</td>
+                <Tr key={i} onClick={selectRowHandler.bind(this)}>
+                  <Th scope="row">{order.id}</Th>
+                  <Td>{order.time}</Td>
+                  <Td>{order.date}</Td>
+                  <Td>{order.source}</Td>
+                  <Td>{order.destination}</Td>
+                  <Td>{setStatusRender(order.status, i)}</Td>
                   {trackRow}
-                </tr>
+                </Tr>
               );
             })}
-          </tbody>
+          </Tbody>
         </Table>
       </div>
     </div>

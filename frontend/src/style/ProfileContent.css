@@ -252,6 +252,10 @@ input[type="text"] {
   align-items: center;
 }
 
+.responsiveTable tbody tr {
+  border: none !important;
+}
+
 @keyframes toggle {
   0% {
     right: -90%;
