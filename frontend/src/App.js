@@ -9,7 +9,7 @@ import SignUpModal from "./components/home/SignInModal";
 import Signup from "./components/signup/Signup";
 import Profile from "./components/profile/Profile";
 import Order from "./components/order/Order";
-import SocketIOClient from "./socket.io-client/SocketIOClient";
+import SocketIOClient from "./communication-service/CommunicationService";
 import Track from "./components/track/Track";
 import Assist from "./components/assist/Assist";
 
