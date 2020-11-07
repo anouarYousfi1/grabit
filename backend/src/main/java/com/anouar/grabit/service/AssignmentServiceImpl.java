@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 @Service
-public class AssignmentServiceImpl implements AssignmentService{
+public class AssignmentServiceImpl implements AssignmentService {
 
     private static Logger log = Logger.getLogger(AssignmentServiceImpl.class.getName());
 
@@ -30,7 +30,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 
     Thread mainThread;
     Thread secondaryThread;
-
+    List<Order> pendingOrders = new ArrayList<>();
 
     @PostConstruct
     @Override
@@ -51,7 +51,6 @@ public class AssignmentServiceImpl implements AssignmentService{
     @Override
     public void assignOrdersToDrivers() {
 
-        List<Order> pendingOrders = new ArrayList<>();
 
         mainThread = new Thread(() -> {
             log.info("Thread 1 started");
@@ -59,10 +58,10 @@ public class AssignmentServiceImpl implements AssignmentService{
                 List<Order> ordersToSet = new ArrayList<>();
                 List<Courier> actifCouriers;
 
-                while(true){
+                while (true) {
 
-                    for (Order order: orderService.getOrdersByStatus(null)) {
-                        if(orderExists(ordersToSet, order.getId()))
+                    for (Order order : orderService.getOrdersByStatus(null)) {
+                        if (orderExists(ordersToSet, order.getId()))
                             continue;
                         else {
                             ordersToSet.add(order);
@@ -73,53 +72,27 @@ public class AssignmentServiceImpl implements AssignmentService{
                     actifCouriers = courierService.findCouriersByStatus(true);
                     Random random = new Random();
 
-                    for (Order order:ordersToSet) {
+                    for (Order order : ordersToSet) {
 
 
-                        if(!actifCouriers.isEmpty() && !pendingOrders.contains(order)){
+                        if (!actifCouriers.isEmpty() && !pendingOrders.contains(order)) {
 
 
                             int courierNumber = random.nextInt(actifCouriers.size());
                             order.setCourierId(actifCouriers.get(courierNumber));
 
                             orderService.saveOrder(order);
-                            communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()),env.getProperty("message.new_order"), env.getProperty("event.new_order"));
-                            synchronized (pendingOrders){
+                            communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()), env.getProperty("message.new_order"), env.getProperty("event.new_order"));
+                            synchronized (pendingOrders) {
                                 pendingOrders.add(order);
                             }
-                            log.info("orders driver : "+order.getCourierId().toString());
+                            log.info("orders driver : " + order.getCourierId().toString());
 
-                            Thread check = new Thread(() -> {
+                            // waiting for drivers approval (3 minutes)
+                            countDownForDriversApproval(order);
 
-                                    try {
-                                        log.info("waiting for drivers action (3 minutes)");
-                                        Thread.sleep(180000);
-                                        Order checkOrder = orderService.findOrderById(order.getId());
-                                        if(checkOrder.getStatus() == null){
-                                            log.info("the driver "+order.getCourierId().getFullName()+" didn't accept the order");
-                                            synchronized (order.getCourierId()){
-                                                communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()),env.getProperty("message.rejected_order"), env.getProperty("event.rejected_order") );
-                                                order.setCourierId(null);
-                                                orderService.saveOrder(order);
-                                                synchronized (pendingOrders){
-                                                    pendingOrders.remove(order);
-                                                }
-
-                                            }
-                                                                                    }
-
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-
-                            });
-
-                            check.setDaemon(true);
-                            check.start();
-
-                        }
-                        else{
-                            log.info("no actif drivers or order is being assigned to a driver");
+                        } else {
+                            log.info("no actif drivers, or order is being assigned to a driver");
                         }
 
 
@@ -127,7 +100,7 @@ public class AssignmentServiceImpl implements AssignmentService{
                         Thread.sleep(5000);
                     }
 
-                    if(ordersToSet.isEmpty())
+                    if (ordersToSet.isEmpty())
                         log.info("empty orders list");
 
                     log.info("Thread 1 : sleeping for 3 seconds");
@@ -142,6 +115,15 @@ public class AssignmentServiceImpl implements AssignmentService{
         });
 
 
+        checkDriversApproval();
+
+
+        mainThread.setDaemon(true);
+        mainThread.start();
+
+    }
+
+    private void checkDriversApproval() {
         secondaryThread = new Thread(() -> {
             log.info("Thread 2 started");
             try {
@@ -149,7 +131,7 @@ public class AssignmentServiceImpl implements AssignmentService{
                     for (Order order : pendingOrders) {
                         Order checkedOrder = orderService.findOrderById(order.getId());
                         if (checkedOrder.getStatus() != null) {
-                            log.info("a driver has accepted the order "+ order.getId());
+                            log.info("a driver has accepted the order " + order.getId());
                             synchronized (pendingOrders) {
                                 pendingOrders.remove(order);
                             }
@@ -158,23 +140,46 @@ public class AssignmentServiceImpl implements AssignmentService{
                     log.info("Thread 2 :  sleeping for 5 seconds");
                     Thread.sleep(5000);
                 }
-            }
-            catch(InterruptedException e){
-                    e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-
-
-
-        mainThread.setDaemon(true);
-        mainThread.start();
         secondaryThread.setDaemon(true);
         secondaryThread.start();
-
-
     }
 
-    public boolean orderExists(List<Order> orders, Integer id){
+
+    private void countDownForDriversApproval(Order order) {
+        Thread check = new Thread(() -> {
+
+            try {
+                log.info("waiting for drivers action (3 minutes)");
+                Thread.sleep(180000);
+                Order checkOrder = orderService.findOrderById(order.getId());
+                if (checkOrder.getStatus() == null) {
+                    log.info("the driver " + order.getCourierId().getFullName() + " didn't accept the order");
+                    synchronized (order.getCourierId()) {
+                        communicationService.pushMessageToUser(communicationService.getDriversUUID(order.getCourierId().getId()), env.getProperty("message.rejected_order"), env.getProperty("event.rejected_order"));
+                        order.setCourierId(null);
+                        orderService.saveOrder(order);
+                        synchronized (pendingOrders) {
+                            pendingOrders.remove(order);
+                        }
+
+                    }
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        check.setDaemon(true);
+        check.start();
+    }
+
+    public boolean orderExists(List<Order> orders, Integer id) {
         return orders.stream().filter(order -> order.getId() == id).findFirst().isPresent();
     }
 
