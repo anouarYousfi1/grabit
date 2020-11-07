@@ -32,9 +32,8 @@ public class CommunicationServiceImpl implements CommunicationService {
 
 
     /**
-     * Custom Event`push_data_event` for service side to client communication
+     * Custom Events for service side to client communication
      */
-    private static final String PUSH_DATA_EVENT = "push_data_event";
     private static final String POST_LOCATION = "PostLocation";
     private static final String REDIRECT_LOCATION = "RedirectLocation";
 
@@ -60,36 +59,19 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public void start() {
         // Listen for client connections
-        socketIOServer.addConnectListener(client -> {
-            log.info("************ Client: " + getIpByClient(client) + " Connected ************");
-            // Custom Events `connected` -> communicate with clients (built-in events such as Socket.EVENT_CONNECT can also be used)
-            client.sendEvent("connected", "You're connected successfully...");
-            String userId = getParamsByClient(client);
-            if (userId != null) {
-                clientMap.put(userId, client);
-            }
-
-        });
+        connectionListener();
 
         // Listening Client Disconnect
-        socketIOServer.addDisconnectListener(client -> {
-            String clientIp = getIpByClient(client);
-            log.info(clientIp + " *********************** " + "Client disconnected");
-            String userId = getParamsByClient(client);
-            if (userId != null) {
-                clientMap.remove(userId);
-            }
-            client.disconnect();
-        });
+        disconnectionListener();
 
-        // Custom Event`client_info_event` ->Listen for client messages
-        socketIOServer.addEventListener(PUSH_DATA_EVENT, String.class, (client, data, ackSender) -> {
-            // When a client pushes a `client_info_event` event, onData accepts data, which is json data of type string here and can be Byte[], other types of object
-            String clientIp = getIpByClient(client);
-            log.info(clientIp + " ************ Client : " + data);
-        });
+        // Listening for drivers location before redirecting it to the customer
+        locationListener();
 
+        // Start Services
+        socketIOServer.start();
+    }
 
+    private void locationListener() {
         socketIOServer.addEventListener(POST_LOCATION, Location.class, (client, data, ackSender)  -> {
 
             String clientIp = getIpByClient(client);
@@ -109,9 +91,7 @@ public class CommunicationServiceImpl implements CommunicationService {
                 for (Map.Entry<UUID,Location> customersEntry : customersMap.entrySet()) {
                     if(driversEntry.getValue().getOrder() == customersEntry.getValue().getOrder()){
                         log.info("redirecting drivers location to customer ... ");
-                        socketIOServer.
-                                getClient(customersEntry.getKey()).
-                                sendEvent(REDIRECT_LOCATION, driversEntry.getValue());
+                        redirectLocation(driversEntry, customersEntry);
                     }
                 }
             }
@@ -121,9 +101,37 @@ public class CommunicationServiceImpl implements CommunicationService {
             log.info(clientIp + " ************ Client : " + data.toString());
 
         });
+    }
 
-        // Start Services
-        socketIOServer.start();
+    private void redirectLocation(Map.Entry<UUID, Location> driversEntry, Map.Entry<UUID, Location> customersEntry) {
+        socketIOServer.
+                getClient(customersEntry.getKey()).
+                sendEvent(REDIRECT_LOCATION, driversEntry.getValue());
+    }
+
+    private void disconnectionListener() {
+        socketIOServer.addDisconnectListener(client -> {
+            String clientIp = getIpByClient(client);
+            log.info(clientIp + " *********************** " + "Client disconnected");
+            String userId = getParamsByClient(client);
+            if (userId != null) {
+                clientMap.remove(userId);
+            }
+            client.disconnect();
+        });
+    }
+
+    private void connectionListener() {
+        socketIOServer.addConnectListener(client -> {
+            log.info("************ Client: " + getIpByClient(client) + " Connected ************");
+            // Custom Events `connected` -> communicate with clients (built-in events such as Socket.EVENT_CONNECT can also be used)
+            client.sendEvent("connected", "You're connected successfully...");
+            String userId = getParamsByClient(client);
+            if (userId != null) {
+                clientMap.put(userId, client);
+            }
+
+        });
     }
 
     @Override
@@ -185,15 +193,6 @@ public class CommunicationServiceImpl implements CommunicationService {
         String sa = client.getRemoteAddress().toString();
         String clientIp = sa.substring(1, sa.indexOf(":"));
         return clientIp;
-    }
-
-    private UUID getKeyFromLocation(Map<UUID, Location> map, Location location){
-
-        return map.entrySet()
-                .stream()
-                .filter(entry -> location.getOrder().equals(entry.getValue().getOrder()))
-                .map(Map.Entry::getKey)
-                .findFirst().get();
     }
 
 
