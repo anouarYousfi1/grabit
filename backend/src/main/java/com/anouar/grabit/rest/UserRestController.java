@@ -1,5 +1,6 @@
 package com.anouar.grabit.rest;
 
+import com.anouar.grabit.model.Customer;
 import com.anouar.grabit.model.User;
 import com.anouar.grabit.service.UserService;
 import com.anouar.grabit.config.SameSiteInjector;
@@ -94,6 +95,11 @@ public class UserRestController {
 
         request.getSession().invalidate();
 
+        deleteCookies(request, response);
+        return new ResponseEntity<String>("logged out", HttpStatus.OK);
+    }
+
+    private void deleteCookies(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             cookie.setMaxAge(0);
@@ -102,7 +108,6 @@ public class UserRestController {
             response.addCookie(cookie);
 
         }
-        return new ResponseEntity<String>("logged out", HttpStatus.OK);
     }
 
 
@@ -113,14 +118,27 @@ public class UserRestController {
 
 
         if(userToUpdate != null){
-            userToUpdate.setFullName(user.getFullName());
-            userToUpdate.setEmail(user.getEmail());
-            userToUpdate.setTelephone(user.getTelephone());
+            update(user, userToUpdate);
             userService.saveUser(userToUpdate);
         }
 
         return new ResponseEntity<User>(userToUpdate, HttpStatus.OK);
     }
 
+    private void update(@RequestBody User user, User userToUpdate) {
+        userToUpdate.setFullName(user.getFullName());
+        userToUpdate.setEmail(user.getEmail());
+        userToUpdate.setTelephone(user.getTelephone());
+    }
+
+
+    static void generateSession(HttpServletRequest request, String key, @RequestBody User user) {
+        List emails = (List) request.getSession().getAttribute(key);
+        if(emails == null) {
+            emails = new ArrayList();
+            request.getSession().setAttribute(key, emails);
+            emails.add(user.getEmail());
+        }
+    }
 
 }

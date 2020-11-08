@@ -67,6 +67,19 @@ public class OrderRestController {
         order.setCourierId(courierId);
 
 
+        saveAndRetrieveItems(order, items);
+
+
+        order.setItems(items);
+            System.out.println(order.toString());
+
+            orderService.saveOrder(order);
+
+
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+
+    private void saveAndRetrieveItems(@RequestBody Order order, List<Items> items) {
         for (Items item : order.getItems()) {
             if (!itemsService.itemExists(item)) {
                 itemsService.saveItem(item);
@@ -78,16 +91,7 @@ public class OrderRestController {
 
             }
         }
-
-
-            order.setItems(items);
-            System.out.println(order.toString());
-
-            orderService.saveOrder(order);
-
-
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
+    }
 
     private ResponseEntity<List<Order>> getListOrders(List<Order> myOrders, @RequestBody User user) {
         List<Order> orders = myOrders;

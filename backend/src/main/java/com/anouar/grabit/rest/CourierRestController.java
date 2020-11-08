@@ -37,13 +37,8 @@ public class CourierRestController {
         if(!service.courierExists(courier)){
 
             service.saveCourier(courier);
-            List emails = (List) request.getSession().getAttribute(KEY);
-            if(emails == null) {
-                emails = new ArrayList();
-                request.getSession().setAttribute(KEY, emails);
-                emails.add(courier.getEmail());
-                LOG.info(emails.toString());
-            }
+            UserRestController.generateSession(request, KEY, courier);
+
 
 
         } else {

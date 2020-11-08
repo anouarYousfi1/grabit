@@ -1,6 +1,7 @@
 package com.anouar.grabit.rest;
 
 import com.anouar.grabit.model.Customer;
+import com.anouar.grabit.model.User;
 import com.anouar.grabit.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -36,13 +37,8 @@ public class CustomerRestController {
         if(!service.customerExists(customer)){
 
             service.saveCustomer(customer);
-            List emails = (List) request.getSession().getAttribute(KEY);
-            if(emails == null) {
-                emails = new ArrayList();
-                request.getSession().setAttribute(KEY, emails);
-                emails.add(customer.getEmail());
-                LOG.info(emails.toString());
-            }
+
+            UserRestController.generateSession(request, KEY, customer);
 
 
         } else {
