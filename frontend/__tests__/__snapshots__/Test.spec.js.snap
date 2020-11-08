@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Brick component renders correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Content component renders correctly 1`] = `ReactWrapper {}`;
+
+exports[`Footer component renders correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Header component renders correctly 1`] = `ShallowWrapper {}`;
+
+exports[`HeaderContent component renders correctly 1`] = `ReactWrapper {}`;
+
+exports[`Home Background component renders correctly 1`] = `ShallowWrapper {}`;
