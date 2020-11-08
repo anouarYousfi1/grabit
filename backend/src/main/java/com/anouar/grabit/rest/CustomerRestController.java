@@ -64,18 +64,6 @@ public class CustomerRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<List> login(@RequestBody Customer customer, HttpServletRequest request)
-    {
-        List emails = (List) request.getSession(false).getAttribute(KEY);
-        if(emails.contains(customer.getEmail())) {
-                return new ResponseEntity<List>(emails, HttpStatus.OK);
-        }
-
-
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-    }
-
 
 
 
