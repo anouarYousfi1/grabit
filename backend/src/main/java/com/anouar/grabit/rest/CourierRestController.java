@@ -29,18 +29,6 @@ public class CourierRestController {
 
     private static String KEY = "CUSTOMERS";
 
-    @GetMapping("/")
-    public String getDrivers(HttpSession session) {
-        List emails= (List) session.getAttribute(KEY);
-        if(emails == null) {
-            System.out.println("null");
-        }else {
-            System.out.println(emails);
-        }
-
-        return "index";
-    }
-
     @PostMapping("/save")
     public ResponseEntity<String> saveDriver(@RequestBody Courier courier, HttpServletRequest request)
     {

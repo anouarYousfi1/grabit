@@ -28,18 +28,6 @@ public class CustomerRestController {
 
     private static String KEY = "CUSTOMERS";
 
-    @GetMapping("/")
-    public String getCustomers(HttpSession session) {
-        List emails= (List) session.getAttribute(KEY);
-        if(emails == null) {
-            System.out.println("null");
-        }else {
-            System.out.println(emails);
-        }
-
-        return "index";
-    }
-
     @PostMapping("/save")
     public ResponseEntity<String> saveCustomer(@RequestBody Customer customer, HttpServletRequest request)
     {
