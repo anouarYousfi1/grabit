@@ -1,7 +1,7 @@
 import React, { useState, createContext } from "react";
 import { faBiking, faUser } from "@fortawesome/free-solid-svg-icons";
 
-export const SignupContext = createContext();
+export const SignupContext = createContext([[], function () {}]);
 
 export const SignupProvider = (props) => {
   const [Signups, setSignups] = useState([
