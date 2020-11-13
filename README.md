@@ -1,68 +1,121 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Grabit
 
-## Available Scripts
+A delivery application created with React, Java, Mysql and Socket.io.
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [General info](#general-info)
+- [features](#features)
+- [To Do](#to-do)
+- [Technologies](#technologies)
+  - [Developement](#developement)
+  - [Testing](#testing)
+- [Setup](#setup)
+- [Fundamental Principles](#fundamental-principles)
+- [Test Coverage](#test-coverage)
+- [Deployment](#deployment)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### General info
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+the project is a delivery web application that gives customers the possibility
+to order anything from anywhere and gives also the possibility for couriers to work
+and deliver orders, the difference between grabit and any other delivery solution
+is that the cost is shared between nearby living customers.
 
-### `npm test`
+### features
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Signup as customer.
+- Signup as a Courier.
+- edit profile (as a customer and courier ).
+- set status (active or inactive) (as a courier).
+- request an order (as a customer).
+- display list of orders and their status (as a customer and courier).
+- filter the list of orders by order status (as a customer and courier).
+- assign orders to drivers
+- track order (as a customer)
+- set order status (accepted, picked, delivered) (as a courier)
+- getting a notification when an order is assigned to a courier.
+- getting a notification when the order is not accepted by courier (in 3 minutes).
+- assist courier (optimized route, next address, order details)
 
-### `npm run build`
+### To Do
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- link nearby orders to each other to improve the courier's
+  delivery experience.
+- sort orders from the closest to the farthest from the courier
+  to set the most optimised route.
+- change file structure design to atomic design.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Technologies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Developement
 
-### `npm run eject`
+- React
+- Java
+- Spring Boot
+- Socket.io-client (frontend)
+- netty-socketio (backend)
+- MySql
+- Leaflet
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Testing
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Jest (unit testing)
+- Enzyme (integration testing with mount())
+- puppeteer (e2e testing)
+- Junit5
+- Mockito
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Setup
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+git clone https://github.com/yasTheDreamer/grabit.git
+cd grabit
+```
 
-## Learn More
+#### Start the backend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+cd backend
+mvn install
+mvn spring-boot:run
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Start the frontend
 
-### Code Splitting
+```
+cd frontend
+npm install
+npm run start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### Fundamental Principles
 
-### Analyzing the Bundle Size
+i tried to follow clean architecture and clean code principles (solid, grasp ...)
+and tried as much as possible to stick to some basic principles when refactoring :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+#### code smells
 
-### Making a Progressive Web App
+- eliminate bloaters (long methods) by Extracting methods.
+- moving methods to more generic classes.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### Test Coverage
 
-### Advanced Configuration
+Run backend tests using the command :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```
+mvn test
+```
+
+Run frontend tests using the command :
+
+```
+npm run test
+```
+
+PS : i only tested some fonctionalities from unit to e2e, other tests will be done soon.
 
 ### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Only the frontend part of the application is hosted on netlify (netlify doesn't host the backend).
+the url is : [grabit](https://objective-austin-3b2ce1.netlify.app/)
